@@ -6,6 +6,8 @@ import {Window} from "./Window.js";
 import {List} from "./List.js";
 import {Home} from "./Home.js";
 import {NotFound} from "./NotFound.js";
+import {CardContainer} from "./CardContainer.js";
+import {Layout} from "./Layout.js";
 
 
 /**
@@ -46,6 +48,18 @@ const mainMenu = menu({cls: "main"},
   btn({
     text: "List",
     route:"list"
+  }),
+  btn({
+    text: "Component",
+    route:"component"
+  }),
+  btn({
+    text: "Card container",
+    route:"cardcontainer"
+  }),
+  btn({
+    text: "Layout",
+    route:"layout"
   })
 );
 
@@ -54,7 +68,7 @@ const mainMenu = menu({cls: "main"},
  * @param cmp
  */
 const pageLoader = (cmp:typeof Component) => {
-  const id = router.getPath();
+  const id = router.getPath() || "home";
   let page = main.findItem(id) as Component | undefined;
   if(!page) {
     page = new cmp;
@@ -89,6 +103,15 @@ router
   })
   .add(/^list$/, () => {
     pageLoader(List);
+  })
+  .add(/^component$/, () => {
+    pageLoader(Component);
+  })
+  .add(/^cardcontainer$/, () => {
+    pageLoader(CardContainer);
+  })
+  .add(/^layout$/, () => {
+    pageLoader(Layout);
   })
   .add(() => {
     pageLoader(NotFound);
