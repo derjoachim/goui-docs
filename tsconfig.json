@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict" : true,
+    "target": "ES2017",
+    "lib": ["es2020", "dom"],
+    "moduleResolution": "node",
+    "module": "ES2020",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist" //set this in the extended
+  } ,
+
+  "include": [
+    "./script"
+  ]
+}
