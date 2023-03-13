@@ -2,7 +2,7 @@ import {Page} from "./Page.js";
 import {btn, comp, win} from "@intermesh/goui";
 
 export class Window extends Page {
-	sourceURL = "script/Window.ts";
+	sourceURL = "Window.ts";
 
 	constructor() {
 		super();

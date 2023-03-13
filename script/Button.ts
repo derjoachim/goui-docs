@@ -1,16 +1,4 @@
-import {
-	btn,
-	checkbox,
-	colorpicker,
-	comp,
-	h2,
-	Menu,
-	menu,
-	Notifier, section,
-	root,
-	tbar,
-	Button as Btn
-} from "@intermesh/goui"
+import {btn, Button as Btn, checkbox, colorpicker, comp, h2, Menu, menu, Notifier, root, tbar} from "@intermesh/goui"
 
 import {Page} from "./Page.js";
 
@@ -19,7 +7,7 @@ export class Button extends Page {
 	constructor() {
 		super();
 
-		this.sourceURL = "./script/Button.ts";
+		this.sourceURL = "Button.ts";
 		this.title = "Buttons";
 
 		this.items.add(
@@ -292,7 +280,7 @@ export class Button extends Page {
 
 	}
 
-	private onClick(btn:Btn, ev:MouseEvent|undefined) {
+	private onClick(btn:Btn) {
 		Notifier.success("You clicked the '" + (btn.icon ?? btn.text) + "' button");
 	}
 }

@@ -6,6 +6,7 @@ export class List extends Page {
 		super();
 
 		this.title = "List";
+		this.sourceURL = "List.ts";
 
 		const s = store({items: this.generateStoreData()});
 

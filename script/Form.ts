@@ -1,14 +1,29 @@
 import {Page} from "./Page.js";
 import {
-	autocomplete, btn, checkbox,
-	colorfield, column, containerfield,
+	arrayfield,
+	autocomplete,
+	btn,
+	checkbox,
+	colorfield,
+	column,
+	containerfield,
 	ContainerField,
-	datefield, DateTime, Field,
+	datefield,
+	DateTime,
+	Field,
 	fieldset,
-	form, htmlfield, radio, RecurrenceField,
-	select, store, StoreRecord, table, tbar,
+	form,
+	htmlfield,
+	radio,
+	recurrencefield,
+	select,
+	store,
+	StoreRecord,
+	table,
+	tbar,
+	textarea,
 	textfield,
-	TextField, recurrencefield, textarea
+	TextField
 } from "@intermesh/goui";
 
 export class Form extends Page {
@@ -16,6 +31,7 @@ export class Form extends Page {
 		super();
 
 		this.title = "Form";
+		this.sourceURL = "Form.ts";
 
 		// Create some records to use for the autocomplete store below
 		const autocompleteRecords: StoreRecord[] = [];
@@ -44,21 +60,42 @@ export class Form extends Page {
 					}
 				},
 
-				fieldset({},
+				fieldset({
+					legend: "Text fields"
+					},
+
+					textfield({
+						label: "Basic",
+						name: "basic"
+					}),
 
 					textfield({
 						itemId: "requiredField",
 						label: "Required field",
-						// placeholder: "Here's the placeholder",
-						name: "test",
+						name: "required",
 						required: true,
-						hint: "Please fill in something awesome"
+						hint: "This is a required field"
 					}),
+
+					textfield({
+						label: "Read Only",
+						name: "readonly",
+						readOnly: true,
+						value: "This is read only"
+					}),
+
+					textfield({
+						label: "Disabled",
+						name: "disabled",
+						disabled: true,
+						value: "Disabled field"
+					})
+			),
+				fieldset({legend: "Picker fields"},
 
 					datefield({
 						label: "Date",
 						name: "date"
-
 					}),
 
 					colorfield({
@@ -130,6 +167,11 @@ export class Form extends Page {
 						})
 					}),
 
+
+					recurrencefield({name: "recurrence"})
+				),
+
+				fieldset({legend: "Multi line"},
 					textarea({
 						label: "Text area",
 						name: "textarea"
@@ -138,32 +180,18 @@ export class Form extends Page {
 					htmlfield({
 						label: "Html",
 						name: "html",
-						hint: "Attach files by dropping or pasting them",
-						// cls: "frame-hint"
+						hint: "Attach files by dropping or pasting them"
 					}),
 
-					containerfield({
-							name: "sub"
-						},
-						textfield({
-							label: "A freaking long stupid label",
-							name: "test1",
-						}),
+					htmlfield({
+						label: "Html",
+						name: "html",
+						hint: "Attach files by dropping or pasting them",
+						cls: "frame-hint"
+					}),
+				),
 
-						textfield({
-							label: "Read Only",
-							name: "readonly",
-							readOnly: true,
-							value: "This is read only"
-						}),
-
-						textfield({
-							label: "Disabled",
-							name: "disabled",
-							disabled: true,
-							value: "Disabled field"
-						})
-					),
+				fieldset({legend: "Checks and radio's"},
 
 					checkbox({
 						label: "A checkbox label comes after",
@@ -198,8 +226,28 @@ export class Form extends Page {
 							{text: "Option 3", value: "option3"}
 						]}
 					),
+				),
 
-					recurrencefield({name: "recurrence"}),
+				fieldset({legend: "Container field"},
+
+					containerfield({
+							name: "sub"
+						},
+						textfield({
+							label: "Sub object",
+							name: "prop",
+						})
+					),
+
+					arrayfield({
+						itemComponent:  () => {
+							return 	textfield({
+								label: "Sub object",
+								name: "prop",
+							})
+						}
+					})
+
 
 				),
 

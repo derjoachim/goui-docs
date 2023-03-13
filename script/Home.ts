@@ -1,5 +1,5 @@
 import {Page} from "./Page.js";
-import {btn, code, h1, h2, p, section} from "@intermesh/goui";
+import {btn, code, h2, p} from "@intermesh/goui";
 
 export class Home extends Page {
 	constructor() {
@@ -17,6 +17,18 @@ export class Home extends Page {
 					"help you with coding by providing intelligent suggestions."
 			}),
 
+
+			h2({
+				text: "Efficient architecture"
+			}),
+
+			p({
+				html: "GOUI is very efficient because it's output is pure Javascript and CSS. If possible we use pure HTML and " +
+					"CSS to put the browser to work to render components. If that's not possible Javascript will be used. " +
+					"Applications are written in pure TypeScript so there's no need for parsing any templates. " +
+					"It goes straight from Javascript to the DOM.<br>" +
+					"We use Emcascript 6 modules that can be lazy loaded to keep memory usage low and performance high."
+			}),
 
 
 			h2({
