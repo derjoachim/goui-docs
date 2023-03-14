@@ -123,7 +123,8 @@ export class Form extends Page {
 						required: true,
 						label: "Autocomplete",
 						name: "autocomplete",
-						value: "id", // if omited the whole record will be the value.
+						displayProperty: "description",
+						valueProperty: "id", // if omitted the whole record will be the value.
 						buttons: [
 							btn({
 								icon: "clear",
@@ -168,7 +169,10 @@ export class Form extends Page {
 					}),
 
 
-					recurrencefield({name: "recurrence"})
+					recurrencefield({
+						label: "Recurrence",
+						name: "recurrence"
+					})
 				),
 
 				fieldset({legend: "Multi line"},
