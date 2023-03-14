@@ -7,7 +7,6 @@ import {
 	colorfield,
 	column,
 	containerfield,
-	ContainerField,
 	datefield,
 	DateTime,
 	Field,
@@ -22,8 +21,7 @@ import {
 	table,
 	tbar,
 	textarea,
-	textfield,
-	TextField
+	textfield, Window
 } from "@intermesh/goui";
 
 export class Form extends Page {
@@ -53,10 +51,7 @@ export class Form extends Page {
 
 						console.log(form.getValues());
 
-						const sub = form.findField("sub") as ContainerField;
-						const test1 = sub.findField("test1") as TextField;
-
-						test1.setInvalid("Hey something went wrong!");
+						Window.alert("Form values", "<code>" + JSON.stringify(form.getValues(), null, 4) + "</code>");
 					}
 				},
 
@@ -120,7 +115,7 @@ export class Form extends Page {
 
 					autocomplete({
 						hint: "Type 'test' to autocomplete",
-						required: true,
+						// required: true,
 						label: "Autocomplete",
 						name: "autocomplete",
 						displayProperty: "description",

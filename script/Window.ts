@@ -1,5 +1,5 @@
 import {Page} from "./Page.js";
-import {btn, comp, win} from "@intermesh/goui";
+import {btn, comp, h2, win, Window as GouiWindow} from "@intermesh/goui";
 
 export class Window extends Page {
 	sourceURL = "Window.ts";
@@ -77,6 +77,32 @@ export class Window extends Page {
 						})
 
 					).show();
+				}
+			}),
+
+
+			h2({
+				text: "Static functions"
+			}),
+
+			btn({
+				text: "Alert",
+				handler: () => {
+					GouiWindow.alert("Alert!", "You clicked the alert button showing a GOUI alert dialog.")
+				}
+			}),
+
+			btn({
+				text: "Prompt",
+				handler: async () => {
+
+					try {
+						const input = await GouiWindow.prompt("Please enter", "Enter your name", "Name");
+
+						GouiWindow.alert("Hi!", "Hi " + input);
+					} catch(e) {
+						GouiWindow.alert("Hi!", "You cancelled");
+					}
 				}
 			})
 		)

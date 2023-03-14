@@ -9,7 +9,7 @@ body {
 	display: flex;
 	menu.main {
 		height: 100%;
-		width: 180px;
+		width: 200px;
 		list-style: none;
 		padding: 0;
 	}
@@ -17,7 +17,14 @@ body {
 	section {
 		padding: 16px;
 		padding-top: 0;
+		max-width: 600px;
+
+		fieldset {
+			max-width: 400px;
+		}
 	}
+
+
 }
 
 code {
