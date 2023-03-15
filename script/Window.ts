@@ -88,21 +88,27 @@ export class Window extends Page {
 			btn({
 				text: "Alert",
 				handler: () => {
-					GouiWindow.alert("Alert!", "You clicked the alert button showing a GOUI alert dialog.")
+					GouiWindow.alert( "You clicked the alert button showing a GOUI alert dialog.")
 				}
 			}),
 
 			btn({
 				text: "Prompt",
 				handler: async () => {
+						const input = await GouiWindow.prompt("Enter your name", "Name");
+						input != undefined ?
+							GouiWindow.alert( "Hi " + input) :
+							GouiWindow.alert( "You cancelled");
+				}
+			}),
 
-					try {
-						const input = await GouiWindow.prompt("Please enter", "Enter your name", "Name");
-
-						GouiWindow.alert("Hi!", "Hi " + input);
-					} catch(e) {
-						GouiWindow.alert("Hi!", "You cancelled");
-					}
+			btn({
+				text: "Confirm",
+				handler: async () => {
+					const confirmed = await GouiWindow.confirm( "Are you sure you want to do this?");
+					confirmed ?
+						GouiWindow.alert("OK!", "Your answer") :
+						GouiWindow.alert("STOP!", "Your answer");
 				}
 			})
 		)

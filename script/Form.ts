@@ -49,9 +49,7 @@ export class Form extends Page {
 					cls: "scroll fit",
 					handler: (form) => {
 
-						console.log(form.getValues());
-
-						Window.alert("Form values", "<code>" + JSON.stringify(form.getValues(), null, 4) + "</code>");
+						Window.alert( "<code>" + JSON.stringify(form.getValues(), null, 4) + "</code>");
 					}
 				},
 
