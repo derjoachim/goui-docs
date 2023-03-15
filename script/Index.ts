@@ -9,7 +9,7 @@ import {NotFound} from "./NotFound.js";
 import {CardContainer} from "./CardContainer.js";
 import {Layout} from "./Layout.js";
 
-
+import {Component as ComponentPage} from "./Component.js";
 /**
  * Create main card panel for displaying SPA pages
  */
@@ -105,7 +105,7 @@ router
     pageLoader(List);
   })
   .add(/^component$/, () => {
-    pageLoader(Component);
+    pageLoader(ComponentPage);
   })
   .add(/^cardcontainer$/, () => {
     pageLoader(CardContainer);
