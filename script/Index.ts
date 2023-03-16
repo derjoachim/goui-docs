@@ -25,38 +25,47 @@ const mainMenu = menu({cls: "main"},
   comp({
     cls: "hbox",
   }, img, h2({text:"GOUI", style: { padding: "0", margin: "0", alignSelf: "center"}})),
+
   btn({
     text: "Home",
     route: ""
   }),
-  btn({
-    text: "Buttons",
-    route:"buttons"
-  }),
-  btn({
-    text: "Form",
-    route:"form"
-  }),
-  btn({
-    text: "Table",
-    route:"table"
-  }),
-  btn({
-    text: "Window",
-    route:"window"
-  }),
-  btn({
-    text: "List",
-    route:"list"
-  }),
+
   btn({
     text: "Component",
     route:"component"
   }),
+
+  btn({
+    text: "Buttons",
+    route:"buttons"
+  }),
+
+  btn({
+    text: "Form",
+    route:"form"
+  }),
+
+  btn({
+    text: "Table",
+    route:"table"
+  }),
+
+  btn({
+    text: "Window",
+    route:"window"
+  }),
+
+  btn({
+    text: "List",
+    route:"list"
+  }),
+
   btn({
     text: "Card container",
     route:"cardcontainer"
   }),
+
   btn({
     text: "Layout",
     route:"layout"
