@@ -1,4 +1,4 @@
-import {btn, Component, mstbar, ObjectUtil, router, searchbtn, tbar} from "@intermesh/goui";
+import {btn, comp, Component, mstbar, ObjectUtil, p, router, searchbtn, tbar} from "@intermesh/goui";
 import {PlaygroundTable} from "./PlaygroundTable.js";
 import {Page} from "../Page.js";
 
@@ -21,6 +21,9 @@ export class PlaygroundTablePanel extends Page {
 
 
 		this.items.add(
+
+			p("Table's support sorting, keyboard navigation and (multi) row selection. Right click the headers to enable or disable columns."),
+
 
 			tbar({},
 				"->",

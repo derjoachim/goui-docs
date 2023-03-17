@@ -112,7 +112,7 @@ export class Form extends Page {
 					}),
 
 					autocomplete({
-						hint: "Type 'test' to autocomplete",
+						hint: "Type 'test' to autocomplete. Use the arrow keys for keyboard navigation.",
 						// required: true,
 						label: "Autocomplete",
 						name: "autocomplete",

@@ -21,21 +21,23 @@ export class PlaygroundTable extends Table {
 
 			[
 				column({
-					header: "Number",
+					header: "No.",
 					id: "number",
 					sortable: true,
 					resizable: true,
-					width: 200
+					width: 100,
+					align: "right"
 				}),
 
+				// Omitting width will auto size this to fill the width
 				column({
 					header: "Description",
 					id: "description",
 					sortable: true,
-					resizable: true,
-					width: 300
+					resizable: true
 				}),
 
+				// datecolumns have a standard width
 				datecolumn({
 					header: "Created At",
 					id: "createdAt",
