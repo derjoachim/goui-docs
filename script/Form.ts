@@ -21,10 +21,12 @@ import {
 	table,
 	tbar,
 	textarea,
-	textfield, Window
+	textfield, Window,
+	Form as GouiForm, p
 } from "@intermesh/goui";
 
 export class Form extends Page {
+	private form: GouiForm;
 	constructor() {
 		super();
 
@@ -42,8 +44,9 @@ export class Form extends Page {
 			});
 		}
 
+
 		this.items.add(
-			form({
+			this.form = form({
 					itemId: "form",
 					title: "Form",
 					cls: "scroll fit",
@@ -227,23 +230,86 @@ export class Form extends Page {
 
 				fieldset({legend: "Container field"},
 
+					p("A container field is used to create a sub property in the form object. Press 'Save' below to see the result."),
+
 					containerfield({
 							name: "sub"
 						},
 						textfield({
 							label: "Sub object",
-							name: "prop",
+							name: "prop"
 						})
-					),
+					)
+				),
+				fieldset({legend: "Array field"},
+
+					p("Array fields can be used to represent an array of objects like contact e-mail addresses for example."),
 
 					arrayfield({
+						name: "arrayfield",
+						/**
+						 * This function is called to create form fields for each array item.
+						 * Typically, a container field will be used.
+						 */
 						itemComponent:  () => {
-							return 	textfield({
-								label: "Sub object",
-								name: "prop",
-							})
-						}
-					})
+							return 	containerfield({
+								cls: "hbox gap",
+								},
+
+								select({
+									width: 100,
+									label: "Type",
+									options: [
+										{
+											value: "work",
+											name: "Work"
+										},
+										{
+											value: "home",
+											name: "Home"
+										}
+									]
+								}),
+								textfield({
+									flex: 1,
+									label: "E-mail",
+									name: "email",
+								}),
+								btn({
+									style: {
+										alignSelf: "center"
+									},
+									icon: "delete",
+									title: "Delete",
+									handler: (btn) => {
+										btn.parent!.remove();
+									}
+								})
+							)
+						},
+						value: [{
+							type: "work",
+							email: "john@work.com"
+						},
+						{
+							type: "home",
+							email: "john@home.com"
+						}]
+					}),
+					tbar({},
+						'->',
+						btn({
+							icon: "add",
+							title: "Add new value",
+							handler: () => {
+								const arrayField = this.form.findField("arrayfield")!;
+								arrayField.value = arrayField.value.concat([{
+									type: "home",
+									email: "another@example.com"
+								}]);
+							}
+						})
+					)
 
 
 				),

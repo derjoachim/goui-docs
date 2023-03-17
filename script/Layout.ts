@@ -13,10 +13,10 @@ export class Layout extends Page {
 
 			h2("hbox"),
 
-			p("The 'hbox' css class create a horizontal stack using flex css."),
+			p("The 'hbox' css class create a horizontal stack using flex css. You can use the 'gap' class to use a standard gap."),
 
 			comp({
-				cls: "hbox",
+				cls: "hbox gap",
 			},
 				comp({
 					width: 100,
@@ -42,10 +42,10 @@ export class Layout extends Page {
 
 			h2("vbox"),
 
-			p("The 'vbox' css class create a vertical stack using flex css."),
+			p("The 'vbox' css class create a vertical stack using flex css. You can use the 'gap' class to use a standard gap."),
 
 			comp({
-					cls: "vbox",
+					cls: "vbox gap",
 					height: 300
 				},
 				comp({
@@ -75,7 +75,7 @@ export class Layout extends Page {
 			p("A Splitter Component can be used for resizing panels on the desktop. Try resizing the panels."),
 
 			comp({
-					cls: "hbox",
+					cls: "hbox gap",
 				},
 				comp({
 					itemId: "left",

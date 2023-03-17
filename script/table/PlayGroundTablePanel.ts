@@ -1,4 +1,4 @@
-import {btn, comp, Component, mstbar, ObjectUtil, p, router, searchbtn, tbar} from "@intermesh/goui";
+import {btn, comp, mstbar, ObjectUtil, p, searchbtn, tbar} from "@intermesh/goui";
 import {PlaygroundTable} from "./PlaygroundTable.js";
 import {Page} from "../Page.js";
 
@@ -53,7 +53,14 @@ export class PlaygroundTablePanel extends Page {
 				mstbar({table: table}, "->", btn({icon: "delete"})),
 			),
 
-			table
+			comp({
+					cls: "frame scroll",
+					height: 300
+				},
+					table
+			)
+
+
 		)
 	}
 }
