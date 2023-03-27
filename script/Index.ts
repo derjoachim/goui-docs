@@ -1,4 +1,4 @@
-import {btn, cards, comp, Component, h2, menu, root, router, splitter} from "@intermesh/goui";
+import {btn, cards, comp, Component, h2, h3, menu, root, router, splitter} from "@intermesh/goui";
 import {Button} from "./Button.js";
 import {PlaygroundTablePanel} from "./table/PlayGroundTablePanel.js";
 import {Form} from "./Form.js";
@@ -10,6 +10,7 @@ import {CardContainer} from "./CardContainer.js";
 import {Layout} from "./Layout.js";
 
 import {Component as ComponentPage} from "./Component.js";
+import {Data} from "./Data.js";
 /**
  * Create main card panel for displaying SPA pages
  */
@@ -37,6 +38,26 @@ const mainMenu = menu({cls: "main"},
   }),
 
   btn({
+    text: "Layout",
+    route:"layout"
+  }),
+
+  btn({
+    text: "Data",
+    route:"data"
+  }),
+
+  h3({
+    text: "Components",
+    style: {padding: "0 8px 0 18px"}
+  }),
+
+  btn({
+    text: "Card container",
+    route:"cardcontainer"
+  }),
+
+  btn({
     text: "Buttons",
     route:"buttons"
   }),
@@ -61,15 +82,9 @@ const mainMenu = menu({cls: "main"},
     route:"list"
   }),
 
-  btn({
-    text: "Card container",
-    route:"cardcontainer"
-  }),
 
-  btn({
-    text: "Layout",
-    route:"layout"
-  })
+
+
 );
 
 /**
@@ -121,6 +136,9 @@ router
   })
   .add(/^layout$/, () => {
     pageLoader(Layout);
+  })
+  .add(/^data$/, () => {
+    pageLoader(Data);
   })
   .add(() => {
     pageLoader(NotFound);

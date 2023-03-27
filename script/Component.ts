@@ -8,7 +8,7 @@ export class Component extends Page {
 
 		this.items.add(
 
-			p("The component class is the base of all components. All components extend this class. <br />" +
+			p("The Component class is the base of all components. All components extend this class. <br />" +
 				"Components are mostly created with a create function. For example a 'Table' is created with 'table()'. " +
 				"These helper functions take child components as second argument. This makes it possible to write " +
 				"organised code with indentation:"),

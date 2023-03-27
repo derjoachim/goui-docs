@@ -1,4 +1,4 @@
-import {btn, Button as Btn, checkbox, colorpicker, comp, h2, Menu, menu, Notifier, root, tbar} from "@intermesh/goui"
+import {btn, Button as Btn, checkbox, colorpicker, comp, h2, Menu, menu, Notifier, p, root, tbar} from "@intermesh/goui"
 import {Page} from "./Page.js";
 
 export class Button extends Page {
@@ -9,6 +9,8 @@ export class Button extends Page {
 		this.title = "Buttons";
 
 		this.items.add(
+
+			p("This page shows all the buttons, toolbars and menu components."),
 
 			h2({
 				text: "Basic"
@@ -32,6 +34,7 @@ export class Button extends Page {
 					cls: "accent",
 					handler: this.onClick
 				}),
+
 				btn({
 					text: "Disabled",
 					handler: this.onClick,
