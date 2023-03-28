@@ -1,25 +1,36 @@
 import {Page} from "./Page.js";
 import {
-	DataSourceStore,
 	AbstractDataSource,
+	BaseEntity,
+	btn,
+	column,
+	comp,
+	DataSourceStore,
+	form,
+	Form,
+	Notifier,
+	p,
 	QueryParams,
-	dataSources, comp, Table, column, table, StoreRecord, form, Form, textfield, btn, p, Notifier
+	Table,
+	table,
+	textfield
 } from "@intermesh/goui";
 
 
 /**
  * This Dummy data source fill itself with 10 Dummy records
  */
-class DummyDataSource<Type> extends AbstractDataSource<Type> {
+class DummyDataSource extends AbstractDataSource<DummyEntity> {
 
 	constructor(id:string) {
 		super(id);
 
 		for(let i = 0; i < 10; i ++) {
-			this.data[i+""] = {
+			let dummy:DummyEntity = {
 				id: i+"",
 				name: "Test " + i
-			} as Type;
+			};
+			this.add(dummy) ;
 		}
 
 	}
@@ -51,8 +62,7 @@ class DummyDataSource<Type> extends AbstractDataSource<Type> {
 	}
 
 }
-interface DummyEntity extends StoreRecord {
-	id: string,
+interface DummyEntity extends BaseEntity {
 	name: string
 }
 
@@ -60,13 +70,13 @@ export class Data extends Page {
 	sourceURL = "Data.ts"
 	private readonly table: Table<DataSourceStore<DummyEntity>>;
 	private readonly form: Form;
-	private readonly dataSource: DummyDataSource<DummyEntity>;
+	private readonly dataSource: DummyDataSource;
 	constructor() {
 		super();
 		this.title = "Data";
 
 		// This is the single source of truth data store
-		this.dataSource = dataSources.get("Dummy", DummyDataSource<DummyEntity>)
+		this.dataSource = new DummyDataSource("dummyId");
 
 		// The table with a store
 		this.table = this.createTable();
