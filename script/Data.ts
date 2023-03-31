@@ -103,10 +103,10 @@ export class Data extends Page {
 		return form({
 			flex: 1,
 			disabled: true,
-			handler: (form) => {
-				const id = this.table.store.get(this.table.rowSelection!.selected[0]).id;
-				this.dataSource.save(form.getValues() as DummyEntity, id);
-				this.dataSource.commit();
+			handler: async (form) => {
+				const entity = form.getValues() as DummyEntity;
+				entity.id = this.table.store.get(this.table.rowSelection!.selected[0]).id;
+				await this.dataSource.update(entity);
 
 				Notifier.success("The record was updated. The change is immediately updated in the list.");
 			}
@@ -130,7 +130,7 @@ export class Data extends Page {
 		// Create a data source store that gets its data from a DataSource.
 		// This store listens for changes on the DataSource.
 		const store = new DataSourceStore<DummyEntity>(this.dataSource);
-		store.load();
+		void store.load();
 
 		return table<DataSourceStore<DummyEntity>>({
 			width: 300,
