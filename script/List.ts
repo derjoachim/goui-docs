@@ -24,7 +24,7 @@ export class List extends Page {
 
 			btn({
 				text: "Regenerate store data",
-				cls: "raised",
+				cls: "filled",
 				handler: () => {
 
 					s.loadData(this.generateStoreData(), false);

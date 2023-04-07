@@ -2,15 +2,15 @@ import {Page} from "./Page.js";
 import {
 	AbstractDataSource,
 	BaseEntity,
-	btn,
-	column,
+	btn, Changes,
+	column, CommitResponse,
 	comp,
-	DataSourceStore,
+	DataSourceStore, EntityID,
 	form,
 	Form,
 	Notifier,
 	p,
-	QueryParams,
+	QueryParams, QueryResponse, SetRequest,
 	Table,
 	table,
 	textfield
@@ -22,28 +22,35 @@ import {
  */
 class DummyDataSource extends AbstractDataSource<DummyEntity> {
 
-	constructor(id:string) {
-		super(id);
-
+	public async loadDummyData() {
 		for(let i = 0; i < 10; i ++) {
 			let dummy:DummyEntity = {
 				id: i+"",
 				name: "Test " + i
 			};
-			this.add(dummy) ;
-		}
 
+			await this.add(dummy) ;
+		}
 	}
-	protected internalCommit() {
-		// Normal stores would save data to a remote source here
-		return Promise.resolve({});
+	protected async internalCommit(params: SetRequest<DummyEntity>) {
+
+		const state = await this.getState();
+		// Normal stores would save data to a remote source here. We just act like everything was saved.
+		return {
+			updated: params.update,
+			created: params.create,
+			destroyed: params.destroy,
+			newState: state!,
+			oldState: state!
+		} as CommitResponse<DummyEntity>;
 	}
 
 	protected internalGet(ids: string[]) {
 		// Normal stores would fetch data from a remote source here
 		return Promise.resolve({
 			list: [],
-			notFound: ids
+			notFound: ids,
+			state: "1"
 		});
 	}
 
@@ -52,13 +59,20 @@ class DummyDataSource extends AbstractDataSource<DummyEntity> {
 		return Promise.resolve({});
 	}
 
-	query(params: QueryParams) {
+	protected internalQuery(params: QueryParams): Promise<QueryResponse> {
 		// this dummy store returns the 10 dummy id's
 		const ids = [];
 		for(let i = 0; i < 10; i++) {
 			ids.push(i+"");
 		}
-		return Promise.resolve({ids: ids});
+		return Promise.resolve({ids: ids, queryState: "1"});
+	}
+
+	protected internalRemoteChanges(): Promise<Changes<DummyEntity>> {
+		return Promise.resolve({
+			newState: "1",
+			oldState: "1"
+		});
 	}
 
 }
@@ -130,7 +144,11 @@ export class Data extends Page {
 		// Create a data source store that gets its data from a DataSource.
 		// This store listens for changes on the DataSource.
 		const store = new DataSourceStore<DummyEntity>(this.dataSource);
-		void store.load();
+		this.dataSource.loadDummyData().then(() => {
+			void store.load();
+
+			console.warn(this.dataSource);
+		})
 
 		return table<DataSourceStore<DummyEntity>>({
 			width: 300,

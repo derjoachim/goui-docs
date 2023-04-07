@@ -55,7 +55,7 @@ export class Home extends Page {
 			code("npm start"),
 
 			btn({
-				cls: "raised",
+				cls: "filled",
 				text: "Open http://localhost:8081",
 				handler: () => {
 					window.open("http://localhost:8081");

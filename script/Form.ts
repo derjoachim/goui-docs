@@ -22,7 +22,8 @@ import {
 	tbar,
 	textarea,
 	textfield, Window,
-	Form as GouiForm, p
+	Form as GouiForm, p,
+	checkboxgroup
 } from "@intermesh/goui";
 
 export class Form extends Page {
@@ -206,8 +207,25 @@ export class Form extends Page {
 						type: "switch"
 					}),
 
+					checkbox({
+						label: "Checkbox type button",
+						name: "checkbox",
+						type: "button",
+						cls: "primary"
+					}),
+
+					checkboxgroup({
+						label: "Group",
+						options: [
+							{label: "Option 1", name: "option1", value: true},
+							{label: "Option 2", name: "option2"},
+							{label: "Option 3", name: "option3"}
+						]
+					}),
+
 
 					radio({
+						label: "Radio with type='button'",
 						type: "button",
 						name: "radio-button",
 						value: "option1",
@@ -219,6 +237,7 @@ export class Form extends Page {
 					),
 
 					radio({
+						label: "Radio with type='box'",
 						type: "box",
 						name: "radio-box",
 						value: "option1",

@@ -43,7 +43,7 @@ export class Button extends Page {
 			),
 
 			h2({
-				text: "Raised buttons"
+				text: "Filled buttons"
 			}),
 
 			tbar({},
@@ -51,24 +51,56 @@ export class Button extends Page {
 				btn({
 					text: "Basic",
 					handler: this.onClick,
-					cls: "raised"
+					cls: "filled"
 				}),
 
 				btn({
 					text: "Primary",
-					cls: "primary raised",
+					cls: "primary filled",
 					handler: this.onClick
 				}),
 
 				btn({
 					text: "Accent",
-					cls: "accent raised",
+					cls: "accent filled",
 					handler: this.onClick
 				}),
 
 				btn({
 					text: "Disabled",
-					cls: "raised",
+					cls: "filled",
+					handler: this.onClick,
+					disabled: true
+				})
+			),
+
+			h2({
+				text: "Outlined buttons"
+			}),
+
+			tbar({},
+
+				btn({
+					text: "Basic",
+					handler: this.onClick,
+					cls: "outlined"
+				}),
+
+				btn({
+					text: "Primary",
+					cls: "primary outlined",
+					handler: this.onClick
+				}),
+
+				btn({
+					text: "Accent",
+					cls: "accent outlined",
+					handler: this.onClick
+				}),
+
+				btn({
+					text: "Disabled",
+					cls: "outlined",
 					handler: this.onClick,
 					disabled: true
 				})
@@ -102,6 +134,25 @@ export class Button extends Page {
 					text: "Disabled",
 					handler: this.onClick,
 					disabled: true
+				})
+			),
+
+			h2("Grouped"),
+
+			comp({cls: "group"},
+				btn({
+					icon: "format_bold",
+					handler: this.onClick
+				}),
+
+				btn({
+					icon: "format_italic",
+					handler: this.onClick
+				}),
+
+				btn({
+					icon: "format_underlined",
+					handler: this.onClick
 				})
 			),
 
