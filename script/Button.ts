@@ -1,4 +1,18 @@
-import {btn, Button as Btn, checkbox, colorpicker, comp, h2, Menu, menu, Notifier, p, root, tbar} from "@intermesh/goui"
+import {
+	btn,
+	Button as Btn,
+	checkbox,
+	colorpicker,
+	comp,
+	h2,
+	hr,
+	Menu,
+	menu,
+	Notifier,
+	p,
+	root,
+	tbar
+} from "@intermesh/goui"
 import {Page} from "./Page.js";
 
 export class Button extends Page {
@@ -212,9 +226,8 @@ export class Button extends Page {
 								}, 1000);
 							}
 						}),
-						comp({
-							tagName: "hr"
-						}),
+
+						hr(),
 
 						btn({
 							text: "Test",
