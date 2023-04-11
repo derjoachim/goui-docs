@@ -16,7 +16,7 @@ export class Page extends Component {
 				comp({flex: 1}),
 
 				this.sourceBtn = btn({
-					cls: "filled",
+					cls: "accent outlined",
 					text: "Source on GitHub",
 					handler:() => {
 						window.open('https://github.com/intermesh/goui-docs/tree/main/script/' + this.sourceURL);
