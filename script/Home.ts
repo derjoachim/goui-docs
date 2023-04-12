@@ -34,7 +34,7 @@ export class Home extends Page {
 					"CSS to put the browser to work to render components. If that's impossible then Javascript will be used. " +
 					"Applications are written in pure TypeScript so there's no need for parsing any templates. " +
 					"It goes straight from Javascript to the DOM.<br>" +
-					"We use Emcascript 6 modules that can be lazy loaded to keep memory usage low and performance high."
+					"We use ECMAScript 6 modules that can be lazy loaded to keep memory usage low and performance high."
 			),
 
 
