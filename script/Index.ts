@@ -11,6 +11,7 @@ import {Layout} from "./Layout.js";
 
 import {Component as ComponentPage} from "./Component.js";
 import {Data} from "./Data.js";
+import {Table} from "./Table.js";
 /**
  * Create main card panel for displaying SPA pages
  */
@@ -120,7 +121,7 @@ router
     pageLoader(Form);
   })
   .add(/^table$/, () => {
-    pageLoader(PlaygroundTablePanel);
+    pageLoader(Table);
   })
   .add(/^window$/, () => {
     pageLoader(Window);
