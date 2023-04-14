@@ -1,6 +1,5 @@
 import {btn, cards, comp, Component, h2, h3, menu, root, router, splitter} from "@intermesh/goui";
 import {Button} from "./Button.js";
-import {PlaygroundTablePanel} from "./table/PlayGroundTablePanel.js";
 import {Form} from "./Form.js";
 import {Window} from "./Window.js";
 import {List} from "./List.js";
@@ -12,6 +11,7 @@ import {Layout} from "./Layout.js";
 import {Component as ComponentPage} from "./Component.js";
 import {Data} from "./Data.js";
 import {Table} from "./Table.js";
+
 /**
  * Create main card panel for displaying SPA pages
  */

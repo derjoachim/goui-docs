@@ -1,4 +1,4 @@
-import {column, Component, datecolumn, DateTime, h2, paginator, store, StoreRecord, table} from "@intermesh/goui";
+import {column, Component, datecolumn, h2, paginator, table} from "@intermesh/goui";
 import {PagingStore} from "./PagingStore.js";
 
 export class PagingTable extends Component {
