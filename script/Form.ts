@@ -23,7 +23,7 @@ import {
 	textarea,
 	textfield, Window,
 	Form as GouiForm, p,
-	checkboxgroup
+	checkboxgroup, mapfield, MapField
 } from "@intermesh/goui";
 
 export class Form extends Page {
@@ -262,22 +262,18 @@ export class Form extends Page {
 						})
 					)
 				),
-				fieldset({legend: "Array field"},
 
-					p("Array fields can be used to represent an array of objects like contact e-mail addresses for example."),
+				fieldset({legend: "Map field"},
 
-					arrayfield({
-						name: "arrayfield",
-						/**
-						 * This function is called to create form fields for each array item.
-						 * Typically, a container field will be used.
-						 */
-						itemComponent:  () => {
-							return 	containerfield({
-								cls: "hbox gap",
+					mapfield({
+						name: "mapfield",
+						buildField: () => {
+							return containerfield({
+									cls: "hbox gap",
 								},
 
 								select({
+									name: "type",
 									width: 100,
 									label: "Type",
 									options: [
@@ -296,15 +292,75 @@ export class Form extends Page {
 									label: "E-mail",
 									name: "email",
 								}),
-								btn({
-									style: {
-										alignSelf: "center"
-									},
-									icon: "delete",
-									title: "Delete",
-									handler: (btn) => {
-										btn.parent!.remove();
-									}
+
+							)
+						},
+
+						value: {
+							"key1": {
+								type: "work",
+								email: "john@work.com"
+							},
+
+							"key2": {
+								type: "home",
+								email: "john@home.com"
+							}
+						}
+					}),
+
+					tbar({},
+						'->',
+						btn({
+							icon: "add",
+							cls: "outlined",
+							text: "Add new value",
+							handler: () => {
+								const fld = this.form.findField<MapField>("mapfield")!;
+								fld.add({
+
+								})
+							}
+						})
+					)
+
+
+				),
+
+				fieldset({legend: "Array field"},
+
+					p("Array fields can be used to represent an array of objects like contact e-mail addresses for example."),
+
+					arrayfield({
+						name: "arrayfield",
+						/**
+						 * This function is called to create form fields for each array item.
+						 * Typically, a container field will be used.
+						 */
+						buildField:  () => {
+							return containerfield({
+								cls: "hbox gap",
+								},
+
+								select({
+									name: "type",
+									width: 100,
+									label: "Type",
+									options: [
+										{
+											value: "work",
+											name: "Work"
+										},
+										{
+											value: "home",
+											name: "Home"
+										}
+									]
+								}),
+								textfield({
+									flex: 1,
+									label: "E-mail",
+									name: "email",
 								})
 							)
 						},
@@ -321,7 +377,8 @@ export class Form extends Page {
 						'->',
 						btn({
 							icon: "add",
-							title: "Add new value",
+							cls: "outlined",
+							text: "Add new value",
 							handler: () => {
 								const arrayField = this.form.findField("arrayfield")!;
 								arrayField.value = arrayField.value.concat([{
