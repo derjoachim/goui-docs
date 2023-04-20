@@ -3,6 +3,7 @@ import {column, datecolumn, DateTime, store, StoreRecord, Table} from "@intermes
 export class PlaygroundTable extends Table {
 
 	constructor() {
+
 		const records: StoreRecord[] = [];
 
 		for (let i = 1; i <= 20; i++) {
@@ -48,7 +49,7 @@ export class PlaygroundTable extends Table {
 
 		this.title = "Table";
 		this.itemId = "table";
-		this.cls = "fit";
+		// this.cls = "fit";
 
 		this.rowSelectionConfig = true;
 

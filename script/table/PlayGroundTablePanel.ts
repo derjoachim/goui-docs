@@ -43,11 +43,14 @@ export class PlaygroundTablePanel extends Component {
 				mstbar({table: playgroundTable}, "->", btn({icon: "delete"})),
 			),
 
-			comp({
-					cls: "frame scroll",
-					height: 300
-				},
-					playgroundTable
+			comp({cls: "pad"}, // needed to properly align with toolbar
+
+				comp({
+						cls: "frame scroll",
+						height: 300
+					},
+						playgroundTable
+				)
 			)
 
 
