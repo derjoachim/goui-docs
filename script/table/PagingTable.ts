@@ -10,7 +10,7 @@ export class PagingTable extends Component {
 		this.items.add(
 			h2("Pagination"),
 
-			table<PagingStore>({
+			table({
 				store: s,
 				cls: "frame",
 				columns: [

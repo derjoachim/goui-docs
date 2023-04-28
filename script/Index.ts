@@ -7,6 +7,7 @@ import {Home} from "./Home.js";
 import {NotFound} from "./NotFound.js";
 import {CardContainer} from "./CardContainer.js";
 import {Layout} from "./Layout.js";
+import {Tree} from "./Tree.js";
 
 import {Component as ComponentPage} from "./Component.js";
 import {Data} from "./Data.js";
@@ -82,7 +83,10 @@ const mainMenu = menu({cls: "main"},
     text: "List",
     route:"list"
   }),
-
+    btn({
+      text: "Tree",
+      route:"tree"
+    }),
 
 
 
@@ -129,6 +133,9 @@ router
   .add(/^list$/, () => {
     pageLoader(List);
   })
+    .add(/^tree$/, () => {
+      pageLoader(Tree);
+    })
   .add(/^component$/, () => {
     pageLoader(ComponentPage);
   })

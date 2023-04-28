@@ -1,96 +1,29 @@
 import {Page} from "./Page.js";
 import {
-	AbstractDataSource,
-	BaseEntity,
-	btn, Changes,
-	column, CommitResponse,
-	comp,
-	DataSourceStore,
+	btn,
+	column,
+	comp, DataSourceStore,
+	datasourcestore,
+	datecolumn,
 	form,
-	Form,
+	Form, list, ListConfig,
 	Notifier,
 	p,
-	QueryParams, QueryResponse, SetRequest,
-	Table,
 	table,
 	textfield
 } from "@intermesh/goui";
+import {demoDataSource, DemoEntity} from "./DemoDataSource";
 
-
-/**
- * This Dummy data source fill itself with 10 Dummy records
- */
-class DummyDataSource extends AbstractDataSource<DummyEntity> {
-
-	public async loadDummyData() {
-		for(let i = 0; i < 10; i ++) {
-			let dummy:DummyEntity = {
-				id: i+"",
-				name: "Test " + i
-			};
-
-			await this.add(dummy) ;
-		}
-	}
-	protected async internalCommit(params: SetRequest<DummyEntity>) {
-
-		const state = await this.getState();
-		// Normal stores would save data to a remote source here. We just act like everything was saved.
-		return {
-			updated: params.update,
-			created: params.create,
-			destroyed: params.destroy,
-			newState: state!,
-			oldState: state!
-		} as CommitResponse<DummyEntity>;
-	}
-
-	protected internalGet(ids: string[]) {
-		// Normal stores would fetch data from a remote source here
-		return Promise.resolve({
-			list: [],
-			notFound: ids,
-			state: "1"
-		});
-	}
-
-	protected internalUpdate() {
-		// Normal stores would check for changes on a remote source here
-		return Promise.resolve({});
-	}
-
-	protected internalQuery(params: QueryParams): Promise<QueryResponse> {
-		// this dummy store returns the 10 dummy id's
-		const ids = [];
-		for(let i = 0; i < 10; i++) {
-			ids.push(i+"");
-		}
-		return Promise.resolve({ids: ids, queryState: "1"});
-	}
-
-	protected internalRemoteChanges(): Promise<Changes<DummyEntity>> {
-		return Promise.resolve({
-			newState: "1",
-			oldState: "1"
-		});
-	}
-
-}
-interface DummyEntity extends BaseEntity {
-	name: string
-}
 
 export class Data extends Page {
 	sourceURL = "Data.ts"
-	private readonly table: Table<DataSourceStore<DummyEntity>>;
+	private readonly table;
 	private readonly form: Form;
-	private readonly dataSource: DummyDataSource;
 	constructor() {
 		super();
 		this.title = "Data";
 
 		// This is the single source of truth data store
-		this.dataSource = new DummyDataSource("dummyId");
 
 		// The table with a store
 		this.table = this.createTable();
@@ -107,7 +40,7 @@ export class Data extends Page {
 				" data source's change event."),
 
 			comp({cls: "hbox gap"},
-				this.table,
+				comp({width: 300, cls: "frame"},this.table),
 				this.form
 			)
 		);
@@ -118,9 +51,9 @@ export class Data extends Page {
 			flex: 1,
 			disabled: true,
 			handler: async (form) => {
-				const entity = form.getValues() as DummyEntity;
+				const entity = form.getValues() as DemoEntity;
 				entity.id = this.table.store.get(this.table.rowSelection!.selected[0]).id;
-				await this.dataSource.update(entity);
+				await demoDataSource.update(entity);
 
 				Notifier.success("The record was updated. The change is immediately updated in the list.");
 			}
@@ -141,18 +74,22 @@ export class Data extends Page {
 
 	private createTable() {
 
-		// Create a data source store that gets its data from a DataSource.
-		// This store listens for changes on the DataSource.
-		const store = new DataSourceStore<DummyEntity>(this.dataSource);
-		this.dataSource.loadDummyData().then(() => {
-			void store.load();
 
-			console.warn(this.dataSource);
-		})
-
-		return table<DataSourceStore<DummyEntity>>({
-			width: 300,
-			store: store,
+		const tab= table({
+			// Create a data source store that gets its data from a DataSource.
+			// This store listens for changes on the DataSource.
+			store: datasourcestore({
+				dataSource: demoDataSource,
+				queryParams: {
+					filter: {
+						parentId: undefined
+					},
+					limit: 10
+				}
+			}),
+			// renderer:(record, row, list1, storeIndex) => {
+			// 	return "";
+			// },
 			rowSelectionConfig: {
 				multiSelect: false
 			},
@@ -160,19 +97,42 @@ export class Data extends Page {
 				column({
 					id: "id",
 					header: "ID",
-					width: 100
+					width: 100,
+					align: "right"
 				}),
 				column({
 					header: "Name",
 					id: "name"
+				}),
+				datecolumn({
+					header: "Created At",
+					id: "createdAt",
+					sortable: true
 				})
 			],
 			listeners: {
+				render: comp1 => {
+					void comp1.store.load();
+				},
+
+
 				navigate:(list, storeIndex, record) => {
 					this.form.setValues(record);
 					this.form.disabled = false;
-				}
+				},
+
+
+
+
+
+
+
 			}
-		})
+		});
+
+		tab.emptyStateHtml = "";
+
+		return tab;
+
 	}
 }
