@@ -74,7 +74,6 @@ export class Data extends Page {
 
 	private createTable() {
 
-
 		const tab= table({
 			// Create a data source store that gets its data from a DataSource.
 			// This store listens for changes on the DataSource.
@@ -87,9 +86,6 @@ export class Data extends Page {
 					limit: 10
 				}
 			}),
-			// renderer:(record, row, list1, storeIndex) => {
-			// 	return "";
-			// },
 			rowSelectionConfig: {
 				multiSelect: false
 			},
@@ -97,12 +93,13 @@ export class Data extends Page {
 				column({
 					id: "id",
 					header: "ID",
-					width: 100,
+					width: 50,
 					align: "right"
 				}),
 				column({
 					header: "Name",
-					id: "name"
+					id: "name",
+					resizable: true
 				}),
 				datecolumn({
 					header: "Created At",
@@ -117,15 +114,10 @@ export class Data extends Page {
 
 
 				navigate:(list, storeIndex, record) => {
+					// const record = list.store.get(storeIndex);
 					this.form.setValues(record);
 					this.form.disabled = false;
-				},
-
-
-
-
-
-
+				}
 
 			}
 		});
