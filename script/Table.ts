@@ -108,13 +108,18 @@ export class Table extends Page {
 			],
 
 			listeners: {
-				navigate:(list, storeIndex, record) => {
+
+
+				navigate:(list, storeIndex) => {
+
 					list.store.get(storeIndex).createdAt;
 				},
 
 				render: sender => {
 					sender.store.loadNext();
-				}
+				},
+
+
 			},
 
 		})

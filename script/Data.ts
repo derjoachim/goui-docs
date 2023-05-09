@@ -108,16 +108,18 @@ export class Data extends Page {
 				})
 			],
 			listeners: {
+
+
+				navigate:(list, storeIndex) => {
+					const record = list.store.get(storeIndex);
+					this.form.setValues(record);
+					this.form.disabled = false;
+				},
+
 				render: comp1 => {
 					void comp1.store.load();
 				},
 
-
-				navigate:(list, storeIndex, record) => {
-					// const record = list.store.get(storeIndex);
-					this.form.setValues(record);
-					this.form.disabled = false;
-				}
 
 			}
 		});
