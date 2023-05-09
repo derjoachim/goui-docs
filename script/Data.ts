@@ -2,11 +2,11 @@ import {Page} from "./Page.js";
 import {
 	btn,
 	column,
-	comp, DataSourceStore,
+	comp,
 	datasourcestore,
 	datecolumn,
 	form,
-	Form, list, ListConfig,
+	Form,
 	Notifier,
 	p,
 	table,
