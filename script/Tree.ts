@@ -1,5 +1,5 @@
 import {Page} from "./Page";
-import {DataSourceStore, h2, Store, store, tree} from "@intermesh/goui";
+import {datasourcestore, DataSourceStore, h2, Store, store, tree} from "@intermesh/goui";
 import {demoDataSource, DemoDataSource, DemoEntity} from "./DemoDataSource";
 
 export class Tree extends Page {
@@ -41,9 +41,8 @@ export class Tree extends Page {
 
         type TreeRecord = {
             id?:string,
-            parentId?:string,
             text:string
-            children:TreeRecord[]
+            children?:TreeRecord[]
         }
 
         const demoTree = tree<Store<TreeRecord>>({
@@ -51,7 +50,8 @@ export class Tree extends Page {
             storeBuilder: record => {
                 const s = store<TreeRecord>();
                 if(record) {
-                    s.loadData(record.children);
+                    if(record.children)
+                        s.loadData(record.children);
                 } else
                 {
                     s.loadData(treeData);
@@ -60,13 +60,26 @@ export class Tree extends Page {
             }
         });
 
-
-
-
         const dsTree = tree<DataSourceStore<DemoEntity>>(
             {
+                labelProperty: "text",
                 storeBuilder: record => {
-                    const store = new DataSourceStore<DemoEntity>(demoDataSource);
+                    const store = datasourcestore({
+                        dataSource: demoDataSource,
+                        buildRecord: async (e): Promise<TreeRecord> => {
+                            const children = await demoDataSource.query({
+                                filter: {parentId: e.id}
+                            });
+                            const rec= {
+                                id: e.id+"",
+                                text: e.name,
+                                children: children.ids.length ? undefined : [] // set to empty array if has no childen so
+                                // the tree knows it's a leaf
+                            }
+
+                            return rec;
+                        }
+                    })
                     store.queryParams.filter = {
                         parentId:  record ? record.id : undefined
                     }

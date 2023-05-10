@@ -54,8 +54,6 @@ export class DemoDataSource extends AbstractDataSource<DemoEntity> {
             ret.list.push(data[id]);
         })
 
-        console.log('get ', ret);
-
         return Promise.resolve(ret);
     }
 
@@ -96,8 +94,6 @@ export class DemoDataSource extends AbstractDataSource<DemoEntity> {
             params.position = params.position ?? 0;
             ids = ids.slice(params.position, params.position + params.limit)
         }
-
-        console.log("Query: ", ids);
 
         return Promise.resolve({ids: ids, queryState: "1"});
     }
