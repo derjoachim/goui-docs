@@ -1,6 +1,6 @@
 import {
     AbstractDataSource, ArrayUtil,
-    BaseEntity,
+    BaseEntity, browserStoreConnection,
     Changes,
     CommitResponse, DateTime, EntityID, GetResponse,
     QueryParams,
@@ -9,20 +9,28 @@ import {
 } from "@intermesh/goui";
 
 
+// we can't use this when generating data
+browserStoreConnection.enabled = false;
+
 const data:Record<EntityID, DemoEntity> = {};
+
+
+const groups = [];
+for ( let i =0; i < 50; i++) {
+    groups.push("Group " + i);
+}
 
 for(let i = 1; i <= 1000; i ++) {
     let demo:DemoEntity = {
         id: i+"",
         parentId: i < 101 ? undefined : (Math.floor(Math.random() * 900) + 1) + "",
         name: "Test " + i,
+        group: groups[Math.floor(Math.random() * 50)],
         createdAt: (new DateTime()).addDays(Math.ceil(Math.random() * -365)).format('c')
     };
 
     data[demo.id]= demo;
 }
-
-
 
 /**
  * This Demo data source fill itself with 10 Demo records
@@ -64,7 +72,7 @@ export class DemoDataSource extends AbstractDataSource<DemoEntity> {
 
     protected internalQuery(params: QueryParams): Promise<QueryResponse> {
         // this Demo store returns the 10 Demo id's
-        let ids =[];
+        let ids :EntityID[] =[];
 
         const d = Object.values(data);
 
@@ -95,7 +103,12 @@ export class DemoDataSource extends AbstractDataSource<DemoEntity> {
             ids = ids.slice(params.position, params.position + params.limit)
         }
 
-        return Promise.resolve({ids: ids, queryState: "1"});
+        return new Promise((resolve) => {
+            // fake network delay
+            setTimeout(() => {
+                resolve( {ids: ids, queryState: "1"});
+            }, 200)
+        });
     }
 
     protected internalRemoteChanges(): Promise<Changes<DemoEntity>> {
@@ -109,7 +122,8 @@ export class DemoDataSource extends AbstractDataSource<DemoEntity> {
 export interface DemoEntity extends BaseEntity {
     name: string,
     parentId?:string,
-    createdAt:string
+    createdAt:string,
+    group: string
 }
 
 export const demoDataSource = new DemoDataSource("DemoId");

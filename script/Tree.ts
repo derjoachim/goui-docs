@@ -1,12 +1,11 @@
 import {Page} from "./Page";
 import {datasourcestore, DataSourceStore, h2, Store, store, tree} from "@intermesh/goui";
 import {demoDataSource, DemoDataSource, DemoEntity} from "./DemoDataSource";
+import {dragData} from "../../goui/script/DragData";
 
 export class Tree extends Page {
     constructor() {
         super();
-
-
 
         this.title = "Tree";
         this.sourceURL = "Tree.ts";
@@ -57,6 +56,24 @@ export class Tree extends Page {
                     s.loadData(treeData);
                 }
                 return s;
+            },
+
+            draggable: true,
+            dropBetween: true,
+            listeners: {
+                drop: (tree, e, dropRow, dropPos, dragData) => {
+                    // dropRow.cls("-no-children");
+                    // dragData.dropTree.el.appendChild(dragData.row);
+
+                    const store = dragData.cmp.store as Store<TreeRecord>,
+                      storeIndex = parseInt(dragData.row.dataset.storeIndex!);
+
+                    const record = store.get(storeIndex);
+                    store.removeAt(storeIndex);
+
+                    dragData.dropTree.store.add(record);
+
+                }
             }
         });
 

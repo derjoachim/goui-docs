@@ -33,7 +33,11 @@ export class Table extends Page {
 
 			h2("Checkbox selection and button in row"),
 
-			this.createTable()
+			this.createTable(),
+
+			h2("Grouped"),
+
+			this.createGroupedTable()
 
 		);
 	}
@@ -92,7 +96,7 @@ export class Table extends Page {
 									text: "Edit",
 									icon: "edit",
 									handler: ()=>{
-										Window.alert(`You want top edit ${record.number}`);
+										Window.alert(`You want to edit ${record.number}`);
 									}
 								}),
 								btn({
@@ -116,7 +120,7 @@ export class Table extends Page {
 				},
 
 				render: sender => {
-					sender.store.loadNext();
+					sender.store.load();
 				},
 
 
@@ -125,4 +129,79 @@ export class Table extends Page {
 		})
 	}
 
+	private createGroupedTable() {
+		return table({
+			store: datasourcestore({
+				dataSource: demoDataSource,
+				queryParams: {
+					filter: {
+						parentId: undefined
+					},
+					limit: 20
+				},
+				sort: [{
+					isAscending:true,
+					property: "group"
+				}, {
+					isAscending:true,
+					property: "name"
+				}]
+			}),
+
+			rowSelectionConfig: {
+				multiSelect: true
+			},
+			groupBy: "group",
+
+			columns: [
+
+				column({
+					header: "ID",
+					id: "id",
+					sortable: true,
+					resizable: true,
+					width: 100,
+					align: "right"
+				}),
+
+				// Omitting width will auto size this to fill the width
+				column({
+					header: "Name",
+					id: "name",
+					sortable: true,
+					resizable: true
+				}),
+
+				// column({
+				// 	header: "Group",
+				// 	id: "group",
+				// 	sortable: true,
+				// 	resizable: true
+				// }),
+
+				// datecolumns have a standard width
+				datecolumn({
+					header: "Created At",
+					id: "createdAt",
+					sortable: true
+				})
+			],
+
+			listeners: {
+
+
+				navigate: (list, storeIndex) => {
+
+					list.store.get(storeIndex).createdAt;
+				},
+
+				render: sender => {
+					sender.store.load();
+				},
+
+
+			},
+
+		})
+	}
 }
