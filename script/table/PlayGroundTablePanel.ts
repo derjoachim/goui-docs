@@ -14,13 +14,12 @@ export class PlaygroundTablePanel extends Component {
 		const records = ObjectUtil.clone(playgroundTable.store.getArray());
 
 		this.items.add(
-
 			tbar({},
 				"->",
 
 				searchbtn({
 					listeners: {
-						input:(searchBtn, text) => {
+						input: (searchBtn, text) => {
 
 							const filtered = records.filter((r) => {
 								return !text || r.description.toLowerCase().indexOf(text.toLowerCase()) === 0;
@@ -49,11 +48,9 @@ export class PlaygroundTablePanel extends Component {
 						cls: "frame scroll",
 						height: 300
 					},
-						playgroundTable
+					playgroundTable
 				)
 			)
-
-
 		)
 	}
 }

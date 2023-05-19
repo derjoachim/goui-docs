@@ -7,8 +7,7 @@ export class Home extends Page {
 		this.title = "Group-Office User Interface";
 
 		this.items.add(
-
-			p( "Welcome to the <a href=\"https://www.group-office.com/\">Group-Office</a> " +
+			p("Welcome to the <a href=\"https://www.group-office.com/\">Group-Office</a> " +
 				"User Interface Documentation website. " +
 				"GOUI is written in <a href=\"https://www.typescriptlang.org/\">TypeScript</a> and " +
 				"<a href=\"https://sass-lang.com/\">SASS</a> to produce beautiful and efficient" +
@@ -22,7 +21,7 @@ export class Home extends Page {
 			p(
 				"GOUI is created to replace the ExtJS 3.4 framework used in " +
 				"<a href=\"https://www.group-office.com/\">Group-Office</a>.<br>" +
-					"But it's not made only for Group-Office. It's standalone and can be " +
+				"But it's not made only for Group-Office. It's standalone and can be " +
 				"used in any Javascript / TypeScript project."
 			),
 
@@ -31,10 +30,10 @@ export class Home extends Page {
 
 			p(
 				"GOUI is very efficient because it's output is pure Javascript and CSS. If possible we use pure HTML and " +
-					"CSS to put the browser to work to render components. If that's impossible then Javascript will be used. " +
-					"Applications are written in pure TypeScript so there's no need for parsing any templates. " +
-					"It goes straight from Javascript to the DOM.<br>" +
-					"We use Emcascript 6 modules that can be lazy loaded to keep memory usage low and performance high."
+				"CSS to put the browser to work to render components. If that's impossible then Javascript will be used. " +
+				"Applications are written in pure TypeScript so there's no need for parsing any templates. " +
+				"It goes straight from Javascript to the DOM.<br>" +
+				"We use Emcascript 6 modules that can be lazy loaded to keep memory usage low and performance high."
 			),
 
 
@@ -61,7 +60,6 @@ export class Home extends Page {
 					window.open("http://localhost:8081");
 				}
 			})
-
 		)
 	}
 }

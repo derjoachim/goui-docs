@@ -19,6 +19,7 @@ export class Data extends Page {
 	sourceURL = "Data.ts"
 	private readonly table;
 	private readonly form: Form;
+
 	constructor() {
 		super();
 		this.title = "Data";
@@ -32,7 +33,6 @@ export class Data extends Page {
 		this.form = this.createForm();
 
 		this.items.add(
-
 			p("GOUI is event driven. A DataSource collection is a single source of truth for all types of data." +
 				" When the DataSource changes it fires an event. All components and stores listen to the 'change' event to " +
 				"update themselves. This approach reduces the amount of code that has to be written and maintained. <br>" +
@@ -40,7 +40,7 @@ export class Data extends Page {
 				" data source's change event."),
 
 			comp({cls: "hbox gap"},
-				comp({width: 300, cls: "frame"},this.table),
+				comp({width: 300, cls: "frame"}, this.table),
 				this.form
 			)
 		);
@@ -48,16 +48,16 @@ export class Data extends Page {
 
 	private createForm() {
 		return form({
-			flex: 1,
-			disabled: true,
-			handler: async (form) => {
-				const entity = form.getValues() as DemoEntity;
-				entity.id = this.table.store.get(this.table.rowSelection!.selected[0]).id;
-				await demoDataSource.update(entity);
+				flex: 1,
+				disabled: true,
+				handler: async (form) => {
+					const entity = form.getValues() as DemoEntity;
+					entity.id = this.table.store.get(this.table.rowSelection!.selected[0]).id;
+					await demoDataSource.update(entity);
 
-				Notifier.success("The record was updated. The change is immediately updated in the list.");
-			}
-		},
+					Notifier.success("The record was updated. The change is immediately updated in the list.");
+				}
+			},
 			textfield({
 				name: "name",
 				label: "Name"
@@ -74,7 +74,7 @@ export class Data extends Page {
 
 	private createTable() {
 
-		const tab= table({
+		const tab = table({
 			// Create a data source store that gets its data from a DataSource.
 			// This store listens for changes on the DataSource.
 			store: datasourcestore({
@@ -110,7 +110,7 @@ export class Data extends Page {
 			listeners: {
 
 
-				navigate:(list, storeIndex) => {
+				navigate: (list, storeIndex) => {
 					const record = list.store.get(storeIndex);
 					this.form.setValues(record);
 					this.form.disabled = false;

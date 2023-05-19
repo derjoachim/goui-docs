@@ -1,6 +1,6 @@
 import {DateTime, Store} from "@intermesh/goui";
 
-interface DemoStoreRecord  {
+interface DemoStoreRecord {
 	number: number,
 	description: string
 	createdAt: string
@@ -21,6 +21,7 @@ export class PagingStore extends Store<DemoStoreRecord> {
 	hasNext(): boolean {
 		return this.pos < 90;
 	}
+
 	hasPrevious(): boolean {
 		return this.pos > 0;
 	}

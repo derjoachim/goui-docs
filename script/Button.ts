@@ -23,7 +23,6 @@ export class Button extends Page {
 		this.title = "Buttons";
 
 		this.items.add(
-
 			p("This page shows all the buttons, toolbars and menu components."),
 
 			h2({
@@ -139,12 +138,12 @@ export class Button extends Page {
 				}),
 
 				btn({
-					icon:"save",
+					icon: "save",
 					cls: "accent",
 					handler: this.onClick
 				}),
 				btn({
-					icon:"more",
+					icon: "more",
 					text: "Disabled",
 					handler: this.onClick,
 					disabled: true
@@ -276,7 +275,7 @@ export class Button extends Page {
 					text: "Color",
 					menu: menu({}, colorpicker({
 						listeners: {
-							select:(colorPicker, color) => {
+							select: (colorPicker, color) => {
 								const menu = (colorPicker.parent as Menu);
 								menu.parentButton!.el.style.color = "#" + color;
 								menu.hide();
@@ -324,25 +323,25 @@ export class Button extends Page {
 				}),
 				btn({
 					text: "Buttons",
-					route:"buttons"
+					route: "buttons"
 				}),
 				btn({
 					text: "Form",
-					route:"form"
+					route: "form"
 				}),
 				btn({
 					text: "Table",
-					route:"table"
+					route: "table"
 				}),
 				btn({
 					text: "Window",
-					route:"window"
+					route: "window"
 				})
 			)
 		)
 	}
 
-	private onClick(btn:Btn) {
+	private onClick(btn: Btn) {
 		Notifier.success("You clicked the '" + (btn.icon ?? btn.text) + "' button");
 	}
 }

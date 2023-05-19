@@ -23,7 +23,6 @@ export class Table extends Page {
 		this.sourceURL = "Table.ts";
 
 		this.items.add(
-
 			p("Table's support sorting, keyboard navigation and (multi) row selection. " +
 				"Right click the headers to enable or disable columns."),
 
@@ -38,7 +37,6 @@ export class Table extends Page {
 			h2("Grouped"),
 
 			this.createGroupedTable()
-
 		);
 	}
 
@@ -55,7 +53,7 @@ export class Table extends Page {
 			}),
 
 			rowSelectionConfig: {
-				multiSelect:true
+				multiSelect: true
 			},
 
 			columns: [
@@ -86,23 +84,23 @@ export class Table extends Page {
 				}),
 
 				column({
-					id:"more",
+					id: "more",
 					width: 56,
-					renderer:(columnValue, record, td, table1, storeIndex) => {
+					renderer: (columnValue, record, td, table1, storeIndex) => {
 						return btn({
 							icon: "more_vert",
 							menu: menu({},
 								btn({
 									text: "Edit",
 									icon: "edit",
-									handler: ()=>{
+									handler: () => {
 										Window.alert(`You want to edit ${record.number}`);
 									}
 								}),
 								btn({
 									text: "Delete",
 									icon: "delete",
-									handler: ()=>{
+									handler: () => {
 										Window.confirm(`Do you want to delete ${record.number}?`);
 									}
 								}))
@@ -114,7 +112,7 @@ export class Table extends Page {
 			listeners: {
 
 
-				navigate:(list, storeIndex) => {
+				navigate: (list, storeIndex) => {
 
 					list.store.get(storeIndex).createdAt;
 				},
@@ -140,10 +138,10 @@ export class Table extends Page {
 					limit: 20
 				},
 				sort: [{
-					isAscending:true,
+					isAscending: true,
 					property: "group"
 				}, {
-					isAscending:true,
+					isAscending: true,
 					property: "name"
 				}]
 			}),

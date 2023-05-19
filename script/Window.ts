@@ -10,27 +10,25 @@ export class Window extends Page {
 		this.title = "Window";
 
 		this.items.add(
-
 			btn({
 				text: "Basic window",
 				handler: () => {
 					win({
-						title: "Basic window",
-						modal: false,
-						width: 400,
-						height: 200,
-						closable: true,
-						maximizable: false,
-						draggable: false,
-						resizable: false
-					},
+							title: "Basic window",
+							modal: false,
+							width: 400,
+							height: 200,
+							closable: true,
+							maximizable: false,
+							draggable: false,
+							resizable: false
+						},
 
 						comp({
 							cls: "pad",
 							text: "I'm a basic window. No features enabled."
 						})
-
-						).show();
+					).show();
 				}
 			}),
 
@@ -53,7 +51,6 @@ export class Window extends Page {
 							cls: "pad",
 							text: "I'm a modal window. You have to close me first."
 						})
-
 					).show();
 				}
 			}),
@@ -75,7 +72,6 @@ export class Window extends Page {
 							cls: "pad",
 							text: "I'm a draggable window. Drag me with the header or resize me on the bottom right."
 						})
-
 					).show();
 				}
 			}),
@@ -88,24 +84,24 @@ export class Window extends Page {
 			btn({
 				text: "Alert",
 				handler: () => {
-					GouiWindow.alert( "You clicked the alert button showing a GOUI alert dialog.")
+					GouiWindow.alert("You clicked the alert button showing a GOUI alert dialog.")
 				}
 			}),
 
 			btn({
 				text: "Prompt",
 				handler: async () => {
-						const input = await GouiWindow.prompt("Enter your name", "Name");
-						input != undefined ?
-							GouiWindow.alert( "Hi " + input) :
-							GouiWindow.alert( "You cancelled");
+					const input = await GouiWindow.prompt("Enter your name", "Name");
+					input != undefined ?
+						GouiWindow.alert("Hi " + input) :
+						GouiWindow.alert("You cancelled");
 				}
 			}),
 
 			btn({
 				text: "Confirm",
 				handler: async () => {
-					const confirmed = await GouiWindow.confirm( "Are you sure you want to do this?");
+					const confirmed = await GouiWindow.confirm("Are you sure you want to do this?");
 					confirmed ?
 						GouiWindow.alert("OK!", "Your answer") :
 						GouiWindow.alert("STOP!", "Your answer");
