@@ -1,5 +1,5 @@
 import {Page} from "./Page.js";
-import {datasourcestore, DataSourceStore, tree} from "@intermesh/goui";
+import {datasourcestore, DataSourceStore, Store, tree} from "@intermesh/goui";
 import {demoDataSource, DemoEntity} from "./DemoDataSource";
 
 type TreeRecord = {
@@ -16,15 +16,26 @@ export class DragAndDrop extends Page {
 
 		this.title = "Drag And Drop";
 
+		const tree = this.createTree();
+		void tree.store.load();
 		this.items.add(
-			this.createTree()
+			tree
 		)
 	}
 
 	createTree() {
 		return tree<DataSourceStore<DemoEntity>>(
 			{
+				listeners: {
+					drop: (tree, e, dropRow, dropPos, dragData) => {
 
+						const store = dragData.cmp.store as Store<TreeRecord>;
+						store.removeAt(dragData.storeIndex);
+
+						dragData.dropTree.store.add(dragData.record);
+
+					}
+				},
 				draggable: true,
 				labelProperty: "text",
 				storeBuilder: record => {
@@ -47,7 +58,7 @@ export class DragAndDrop extends Page {
 					store.queryParams.filter = {
 						parentId: record ? record.id : undefined
 					}
-					void store.load();
+
 
 					return store;
 				}

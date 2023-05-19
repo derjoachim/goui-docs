@@ -61,13 +61,10 @@ export class Tree extends Page {
 			listeners: {
 				drop: (tree, e, dropRow, dropPos, dragData) => {
 
-					const store = dragData.cmp.store as Store<TreeRecord>,
-						storeIndex = parseInt(dragData.row.dataset.storeIndex!);
+					const store = dragData.cmp.store as Store<TreeRecord>;
+					store.removeAt(dragData.storeIndex);
 
-					const record = store.get(storeIndex);
-					store.removeAt(storeIndex);
-
-					dragData.dropTree.store.add(record);
+					dragData.dropTree.store.add(dragData.record);
 
 				}
 			}
@@ -96,12 +93,13 @@ export class Tree extends Page {
 					store.queryParams.filter = {
 						parentId: record ? record.id : undefined
 					}
-					void store.load();
 
 					return store;
 				}
 			}
 		)
+
+		void dsTree.store.load();
 
 		this.items.add(
 			h2("Simple tree"),

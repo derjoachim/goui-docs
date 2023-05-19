@@ -25,10 +25,12 @@ for (let i = 0; i < 50; i++) {
 	groups.push("Group " + i);
 }
 
-for (let i = 1; i <= 1000; i++) {
+const max = 200, topLevel = Math.floor(max*0.1);
+
+for (let i = 1; i <= max; i++) {
 	let demo: DemoEntity = {
 		id: i + "",
-		parentId: i < 101 ? undefined : (Math.floor(Math.random() * 900) + 1) + "",
+		parentId: i < topLevel ? undefined : (Math.floor(Math.random() * (max-topLevel)) + 1) + "",
 		name: "Test " + i,
 		group: groups[Math.floor(Math.random() * 50)],
 		createdAt: (new DateTime()).addDays(Math.ceil(Math.random() * -365)).format('c')
