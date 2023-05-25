@@ -2,6 +2,9 @@ import {column, Component, datecolumn, h2, paginator, table} from "@intermesh/go
 import {PagingStore} from "./PagingStore.js";
 
 export class PagingTable extends Component {
+
+
+
 	constructor() {
 		super();
 
@@ -11,6 +14,7 @@ export class PagingTable extends Component {
 			h2("Pagination"),
 
 			table({
+				fitParent: true,
 				store: s,
 				cls: "frame",
 				columns: [

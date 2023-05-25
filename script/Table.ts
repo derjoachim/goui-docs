@@ -42,6 +42,7 @@ export class Table extends Page {
 
 	private createTable() {
 		return table({
+			fitParent: true,
 			store: datasourcestore({
 				dataSource: demoDataSource,
 				queryParams: {
@@ -123,6 +124,7 @@ export class Table extends Page {
 
 	private createGroupedTable() {
 		return table({
+			fitParent: true,
 			store: datasourcestore({
 				dataSource: demoDataSource,
 				queryParams: {
@@ -181,16 +183,13 @@ export class Table extends Page {
 
 			listeners: {
 
-
 				navigate: (list, storeIndex) => {
-
-					list.store.get(storeIndex).createdAt;
+					console.log(list.store.get(storeIndex).createdAt);
 				},
 
 				render: sender => {
 					sender.store.load();
-				},
-
+				}
 
 			},
 

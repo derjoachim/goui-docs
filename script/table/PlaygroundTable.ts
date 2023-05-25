@@ -2,6 +2,8 @@ import {column, datecolumn, DateTime, store, StoreRecord, Table} from "@intermes
 
 export class PlaygroundTable extends Table {
 
+	fitParent = true;
+
 	constructor() {
 
 		const records: StoreRecord[] = [];

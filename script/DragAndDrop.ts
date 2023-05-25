@@ -131,6 +131,7 @@ export class DragAndDrop extends Page {
 
 	private createSortTable() {
 		return table({
+			fitParent: true,
 			store: datasourcestore({
 				dataSource: demoDataSource,
 				queryParams: {
@@ -197,6 +198,7 @@ export class DragAndDrop extends Page {
 
 	private createTable() {
 		return table({
+			fitParent: true,
 			store: datasourcestore({
 				dataSource: demoDataSource,
 				queryParams: {
