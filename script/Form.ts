@@ -243,7 +243,7 @@ export class Form extends Page {
 						label: "Checkbox type button",
 						name: "checkbox",
 						type: "button",
-						cls: "primary"
+						cls: "outlined"
 					}),
 
 					checkboxgroup({
