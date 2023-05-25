@@ -16,7 +16,7 @@ import {
 	Form as GouiForm,
 	htmlfield,
 	mapfield,
-	MapField,
+	MapField, numberfield,
 	p,
 	radio,
 	recurrencefield,
@@ -95,11 +95,38 @@ export class Form extends Page {
 						value: "Disabled field"
 					})
 				),
+
+				fieldset({legend: "Number field"},
+					numberfield({
+						name: "number",
+						label: "Number",
+						decimals: 2
+					})
+				),
 				fieldset({legend: "Picker fields"},
 
 					datefield({
 						label: "Date",
 						name: "date"
+					}),
+
+					textfield({
+						type: "date",
+						name: "datenative",
+						label: "Date (native)"
+					}),
+
+					textfield({
+						type: "datetime-local",
+						name: "datetime-local",
+						label: "Date & time"
+					}),
+
+
+					textfield({
+						type: "time",
+						name: "time",
+						label: "Time"
 					}),
 
 					colorfield({
