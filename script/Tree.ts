@@ -1,6 +1,6 @@
 import {Page} from "./Page";
-import {btn, datasourcestore, DataSourceStore, h2, Store, store, tree, TreeRecord} from "@intermesh/goui";
-import {demoDataSource, DemoEntity} from "./DemoDataSource";
+import {h2, tree, TreeRecord} from "@intermesh/goui";
+import {demoDataSource} from "./DemoDataSource";
 
 export class Tree extends Page {
 	constructor() {

@@ -1,15 +1,5 @@
 import {Page} from "./Page.js";
-import {
-	btn,
-	checkboxselectcolumn,
-	column, comp,
-	datasourcestore,
-	DataSourceStore,
-	datecolumn, h2, menu, splitter,
-	Store, Table,
-	table,
-	tree, Window
-} from "@intermesh/goui";
+import {column, comp, datasourcestore, datecolumn, h2, splitter, table, tree} from "@intermesh/goui";
 import {demoDataSource, DemoEntity} from "./DemoDataSource";
 
 type TreeRecord = {
