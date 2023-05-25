@@ -1,5 +1,5 @@
 import {Page} from "./Page";
-import {datasourcestore, DataSourceStore, h2, Store, store, tree} from "@intermesh/goui";
+import {btn, datasourcestore, DataSourceStore, h2, Store, store, tree, TreeRecord} from "@intermesh/goui";
 import {demoDataSource, DemoEntity} from "./DemoDataSource";
 
 export class Tree extends Page {
@@ -11,25 +11,41 @@ export class Tree extends Page {
 
 		const treeData: TreeRecord[] = [
 			{
+				id: "1",
 				text: "Node 1",
 				children: [
 					{
+						id: "1.1",
 						text: "Node 1.1",
 						children: []
 					},
 					{
+						id: "1.2",
 						text: "Node 1.2",
+						children: []
+					},
+					{
+						id: "1.3",
+						text: "Node 1.3",
+						children: []
+					},
+					{
+						id: "1.4",
+						text: "Node 1.4",
 						children: []
 					}
 				]
 			}, {
+				id: "2",
 				text: "Node 2",
 				children: [
 					{
+						id: "2.1",
 						text: "Node 2.1",
 						children: []
 					},
 					{
+						id: "2.2",
 						text: "Node 2.2",
 						children: []
 					}
@@ -37,75 +53,97 @@ export class Tree extends Page {
 			}
 		];
 
-		type TreeRecord = {
-			id?: string,
-			text: string
-			children?: TreeRecord[]
-		}
 
-		const demoTree = tree<Store<TreeRecord>>({
-			labelProperty: "text",
-			storeBuilder: record => {
-				const s = store<TreeRecord>();
-				if (record) {
-					if (record.children)
-						s.loadData(record.children);
-				} else {
-					s.loadData(treeData);
-				}
-				return s;
-			},
 
+		const demoTree = tree({
+			data: treeData,
 			draggable: true,
 			dropBetween: true,
+			dropOn: true,
 			listeners: {
-				drop: (tree, e, dropRow, dropPos, dragData) => {
+				drop: (tree, e, dropRow, dropIndex,  dropPos, dragData) => {
 
-					const store = dragData.cmp.store as Store<TreeRecord>;
+					const store = dragData.cmp.store;
+
+					// remove the dragged record from the store
 					store.removeAt(dragData.storeIndex);
+					if(store == dragData.dropTree.store && dragData.storeIndex < dropIndex) {
+						// if inserting in the same store we need to substract 1 from the index as we took one off.
+						dropIndex--;
+					}
 
-					dragData.dropTree.store.add(dragData.record);
+					//add the record to the new position
+					switch(dropPos) {
+						case "on":
+							// put it inside the dropped node at the end
+							dragData.childrenTree.store.add(dragData.record);
+						break;
 
+						case "before":
+							// reorder in the tree where it's dropped
+							dragData.dropTree.store.insert(dropIndex, dragData.record);
+							break;
+
+						case "after":
+							dragData.dropTree.store.insert(dropIndex + 1, dragData.record);
+							break;
+					}
 				}
 			}
 		});
 
-		const dsTree = tree<DataSourceStore<DemoEntity>>(
+
+		/**
+		 * Tree that pulls data out of a datasource
+		 */
+		const dsTree = tree(
 			{
-				labelProperty: "text",
-				storeBuilder: record => {
-					const store = datasourcestore({
-						dataSource: demoDataSource,
-						buildRecord: async (e): Promise<TreeRecord> => {
-							const children = await demoDataSource.query({
-								filter: {parentId: e.id}
+				draggable: true,
+				dropOn: true,
+				listeners: {
+					// We populate the tree directly from a datasource on the expand event. This also fires on render for the root nodes.
+					expand: async (tree1, childrenTree, record, storeIndex) => {
+
+						const getResponse = await demoDataSource.get(),
+							//at the root of the tree record is undefined
+							parentId = record ? record.id : undefined,
+							data = getResponse.list.filter(value => value.parentId == parentId)
+							.map(e => {
+								return {
+									id: e.id + "",
+									text: e.name,
+
+									// set to empty array if it has no children. Then the tree knows it's a leaf.
+									children: getResponse.list.find(value => value.parentId == e.id) ? undefined : []
+								}
 							});
-							const rec = {
-								id: e.id + "",
-								text: e.name,
-								children: children.ids.length ? undefined : [] // set to empty array if has no childen so
-								// the tree knows it's a leaf
-							}
 
-							return rec;
-						}
-					})
-					store.queryParams.filter = {
-						parentId: record ? record.id : undefined
+						childrenTree.store.loadData(data, false);
+					},
+
+					drop: (list, e, dropRow, dropIndex, position, dragData) => {
+						const dropRecord = dragData.dropTree.store.get(dropIndex);
+
+						demoDataSource.update({
+							id: dragData.record.id,
+							parentId: dropRecord.id
+						});
 					}
-
-					return store;
 				}
 			}
-		)
+		);
 
-		void dsTree.store.load();
+		// when the data source changes reload the tree
+		demoDataSource.on("change", () => {
+			dsTree.reload();
+		});
 
 		this.items.add(
 			h2("Simple tree"),
 			demoTree,
 
 			h2("Tree using datasource"),
+
 			dsTree
 		)
 	}

@@ -46,8 +46,22 @@ export class DemoDataSource extends AbstractDataSource<DemoEntity> {
 
 	protected async internalCommit(params: SetRequest<DemoEntity>) {
 
+		console.log("commit", params);
+
 		const state = await this.getState();
-		// Normal stores would save data to a remote source here. We just act like everything was saved.
+
+		for(let id in params.update) {
+			data[id] = Object.assign(data[id], params.update[id]);
+		}
+
+		for(let id in params.create) {
+			data[id] = params.create[id] as DemoEntity;
+		}
+
+		params.destroy.forEach(entityId => {
+			delete data[entityId];
+		})
+
 		return {
 			updated: params.update,
 			created: params.create,
@@ -114,7 +128,7 @@ export class DemoDataSource extends AbstractDataSource<DemoEntity> {
 			// fake network delay
 			setTimeout(() => {
 				resolve({ids: ids, queryState: "1"});
-			}, 200)
+			}, 0) //set fake network timeout
 		});
 	}
 
