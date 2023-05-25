@@ -13,7 +13,8 @@ export class Window extends Page {
 			btn({
 				text: "Basic window",
 				handler: () => {
-					win({
+
+					const w = win({
 							title: "Basic window",
 							modal: false,
 							width: 400,
@@ -21,14 +22,16 @@ export class Window extends Page {
 							closable: true,
 							maximizable: false,
 							draggable: false,
-							resizable: false
+							resizable: false,
 						},
 
 						comp({
 							cls: "pad",
 							text: "I'm a basic window. No features enabled."
 						})
-					).show();
+					);
+
+					w.show();
 				}
 			}),
 
@@ -65,7 +68,8 @@ export class Window extends Page {
 							height: 200,
 							closable: true,
 							maximizable: true,
-							resizable: true
+							resizable: true,
+							collapsible: true
 						},
 
 						comp({
