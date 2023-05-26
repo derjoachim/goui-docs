@@ -17,6 +17,6 @@
     "build:tsc": "npx tsc"
   },
   "dependencies": {
-    "@intermesh/goui": "file:../goui"
+    "@intermesh/goui": "latest"
   }
 }
