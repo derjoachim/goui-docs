@@ -17,7 +17,7 @@ export class Tree extends Page {
 					{
 						id: "1.1",
 						text: "Node 1.1",
-						children: []
+						children: [],
 					},
 					{
 						id: "1.2",
@@ -54,13 +54,15 @@ export class Tree extends Page {
 		];
 
 
-
 		const demoTree = tree({
 			data: treeData,
 			draggable: true,
 			dropBetween: true,
 			dropOn: true,
 			listeners: {
+				rowclick: (list, storeIndex, row, ev) => {
+					console.log(list, storeIndex, row,ev);
+				},
 				drop: (tree, e, dropRow, dropIndex,  dropPos, dragData) => {
 
 					const store = dragData.cmp.store;
@@ -119,6 +121,8 @@ export class Tree extends Page {
 							});
 
 						childrenTree.store.loadData(data, false);
+
+						console.log(tree1.data);
 					},
 
 					drop: (list, e, dropRow, dropIndex, position, dragData) => {
@@ -142,9 +146,77 @@ export class Tree extends Page {
 			h2("Simple tree"),
 			demoTree,
 
+			h2("Checkbox tree"),
+			this.createCheckTree(),
+
 			h2("Tree using datasource"),
 
 			dsTree
 		)
+	}
+
+
+	private createCheckTree() {
+		const treeData: TreeRecord[] = [
+			{
+				id: "1",
+				text: "Node 1",
+				check: true,
+				children: [
+					{
+						id: "1.1",
+						text: "Node 1.1",
+						children: [],
+						check: false,
+					},
+					{
+						id: "1.2",
+						text: "Node 1.2",
+						children: [],
+						check: false,
+					},
+					{
+						id: "1.3",
+						text: "Node 1.3",
+						children: [],
+						check: false,
+					},
+					{
+						id: "1.4",
+						text: "Node 1.4",
+						children: [],
+						check: false,
+					}
+				]
+			}, {
+				check: false,
+				id: "2",
+				text: "Node 2",
+				children: [
+					{
+						id: "2.1",
+						text: "Node 2.1",
+						children: [],
+						check: false,
+					},
+					{
+						id: "2.2",
+						text: "Node 2.2",
+						children: [],
+						check: false,
+					}
+				]
+			}
+		];
+
+
+		return tree({
+			data: treeData,
+			listeners: {
+				checkchange:(tree1, childrenTree, record, storeIndex, checked) => {
+					console.log(record, checked, tree1.data);
+				}
+			}
+		});
 	}
 }
