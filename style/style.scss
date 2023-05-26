@@ -1,30 +1,45 @@
+@import '../node_modules/@intermesh/goui/style/_config.scss';
+
 html {
 	height: 100%;
 }
 body {
-	padding: 16px;
+	padding: 0;
 	margin: 0;
-
 	height: 100%;
 	display: flex;
-	menu.main {
-		height: 100%;
-		width: 200px;
-		list-style: none;
-		padding: 0;
-	}
-
-	section {
-		padding: 0 16px 16px;
-		max-width: 600px;
-
-		form {
-			max-width: 400px;
-		}
-	}
-
-
 }
+nav.main {
+	background-color: rgb(22, 82, 161);
+	color: white;
+	align-items: center;
+}
+
+
+menu.main, menu.demo {
+	height: 100%;
+	width: 200px;
+	list-style: none;
+	padding: 8px;
+	background-color: $colorBackgroundDarker;
+	border-right: 1px solid $colorBorder;
+}
+
+section {
+	padding: 0 16px 16px;
+	max-width: 600px;
+
+	form {
+		max-width: 400px;
+	}
+}
+
+.btn-open-menu {
+	display: none;
+}
+
+
+
 
 code {
 	font-family: "Courier New", monospace;
@@ -39,4 +54,51 @@ code {
 	font-size: 16px;
 	line-height: 1.1em;
 }
+
+
+@media only screen and (max-width: 1120px) {
+	menu.main {
+		position:fixed;
+		z-index: 2;
+		top:0;
+		bottom:0;
+		left: 0;
+		transform: translateX(-100%);
+		transition: transform  200ms linear;
+	}
+
+	.btn-open-menu {
+		display: block;
+	}
+
+
+	.open-menu {
+		menu.main {
+			transform: none;
+		}
+	}
+
+	.overlay {
+		position:fixed;
+		top:0;
+		bottom:0;
+		left:0;
+		right:0;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 200ms linear;
+	}
+	.open-menu {
+		> .overlay {
+			pointer-events: all;
+			opacity: 1;
+			z-index:1;
+			background-color: #01040A99;
+		}
+		overflow:hidden;
+	}
+}
+
+
+
 

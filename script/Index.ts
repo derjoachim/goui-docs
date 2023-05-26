@@ -1,4 +1,4 @@
-import {btn, cards, comp, Component, h2, h3, menu, root, router, splitter} from "@intermesh/goui";
+import {btn, cards, comp, Component, h2, h3, hr, menu, root, router, splitter} from "@intermesh/goui";
 import {Button} from "./Button.js";
 import {Form} from "./Form.js";
 import {Window} from "./Window.js";
@@ -21,17 +21,45 @@ const main = cards({cls: "main scroll", flex: 1});
 
 const img = comp({
 	tagName: "img",
-	style: {width: "56px", height: "56px", padding: "0 8px 0 18px", verticalAlign: "middle"}
+	style: {width: "66px", height: "56px", padding: "8px 8px 8px 18px", verticalAlign: "middle"}
 });
-img.el.setAttribute("src", "./resources/logo-blue-icon.svg");
+img.el.setAttribute("src", "./resources/groupoffice-icon.png");
+
+const header = comp({
+	tagName: "nav",
+	cls: "main hbox"
+},
+	btn({
+		icon: "menu",
+		cls: "btn-open-menu",
+		handler: () => {
+			root.el.classList.add("open-menu");
+		}
+	}),
+
+	comp({
+		cls: "hbox",
+	},
+		img,
+		h2({text: "GOUI", style: {padding: "0", margin: "0", alignSelf: "center"}})
+	),
+
+)
 
 /**
  * Create main menu
  */
-const mainMenu = menu({cls: "main"},
-	comp({
-		cls: "hbox",
-	}, img, h2({text: "GOUI", style: {padding: "0", margin: "0", alignSelf: "center"}})),
+const mainMenu = menu({
+		cls: "main",
+		listeners: {
+				render: menu => {
+					menu.el.addEventListener("click", () => {
+						root.el.classList.remove("open-menu");
+					})
+				}
+		}
+	},
+
 
 	btn({
 		text: "Home",
@@ -165,8 +193,31 @@ router
 		/**
 		 * Use hbox layout to put menu and section side by side
 		 */
-		root.cls = 'hbox';
-		root.items.add(mainMenu, splitter({
-			resizeComponentPredicate: mainMenu
-		}), main);
+		root.cls = 'vbox';
+		root.items.add(
+
+			header,
+			comp({
+				cls: "hbox"
+			},
+				mainMenu,
+				// splitter({
+				// 	resizeComponentPredicate: mainMenu
+				// }),
+				main
+			),
+			comp({
+				cls: "overlay",
+				listeners: {
+					render: overlay => {
+						overlay.el.addEventListener("click", () => {
+							root.el.classList.remove("open-menu");
+						})
+					}
+				}
+			})
+		)
 	});
+
+
+

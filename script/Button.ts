@@ -316,7 +316,7 @@ export class Button extends Page {
 				text: "Navigation menu"
 			}),
 
-			menu({cls: "main"},
+			menu({cls: "demo"},
 				btn({
 					text: "Home",
 					route: ""
