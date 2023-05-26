@@ -8,7 +8,6 @@ export class Layout extends Page {
 		this.sourceURL = './Layout.ts';
 
 		this.items.add(
-
 			p("Layout's are created with CSS. We have made some classes to create layouts."),
 
 			h2("hbox"),
@@ -16,8 +15,8 @@ export class Layout extends Page {
 			p("The 'hbox' css class create a horizontal stack using flex css. You can use the 'gap' class to use a standard gap."),
 
 			comp({
-				cls: "hbox gap",
-			},
+					cls: "hbox gap",
+				},
 				comp({
 					width: 100,
 					cls: "pad",
@@ -120,7 +119,6 @@ export class Layout extends Page {
 
 			h2("border"),
 			p("Use the 'border-top', 'border-right', 'border-bottom' and 'border-left' css class to apply the standard border."),
-
 		)
 	}
 }

@@ -4,6 +4,7 @@ import {
 	autocomplete,
 	btn,
 	checkbox,
+	checkboxgroup,
 	colorfield,
 	column,
 	containerfield,
@@ -12,7 +13,11 @@ import {
 	Field,
 	fieldset,
 	form,
+	Form as GouiForm,
 	htmlfield,
+	mapfield,
+	MapField, numberfield,
+	p,
 	radio,
 	recurrencefield,
 	select,
@@ -21,13 +26,13 @@ import {
 	table,
 	tbar,
 	textarea,
-	textfield, Window,
-	Form as GouiForm, p,
-	checkboxgroup
+	textfield,
+	Window
 } from "@intermesh/goui";
 
 export class Form extends Page {
 	private form: GouiForm;
+
 	constructor() {
 		super();
 
@@ -53,14 +58,14 @@ export class Form extends Page {
 					cls: "scroll fit",
 					handler: (form) => {
 
-						Window.alert( "<code>" + JSON.stringify(form.getValues(), null, 4) + "</code>");
+						Window.alert("<code>" + JSON.stringify(form.getValues(), null, 4) + "</code>");
 					}
 				},
 
 				p("Forms can handle complex object structures using Container and Array type fields. They don't submit in the traditional way but return a Javascript Object that can be sent using an XHR or fetch API request. To see how this works fill in some data and press 'Save' below."),
 
 				fieldset({
-					legend: "Text fields"
+						legend: "Text fields"
 					},
 
 					textfield({
@@ -89,12 +94,39 @@ export class Form extends Page {
 						disabled: true,
 						value: "Disabled field"
 					})
-			),
+				),
+
+				fieldset({legend: "Number field"},
+					numberfield({
+						name: "number",
+						label: "Number",
+						decimals: 2
+					})
+				),
 				fieldset({legend: "Picker fields"},
 
 					datefield({
 						label: "Date",
 						name: "date"
+					}),
+
+					textfield({
+						type: "date",
+						name: "datenative",
+						label: "Date (native)"
+					}),
+
+					textfield({
+						type: "datetime-local",
+						name: "datetime-local",
+						label: "Date & time"
+					}),
+
+
+					textfield({
+						type: "time",
+						name: "time",
+						label: "Time"
 					}),
 
 					colorfield({
@@ -211,7 +243,7 @@ export class Form extends Page {
 						label: "Checkbox type button",
 						name: "checkbox",
 						type: "button",
-						cls: "primary"
+						cls: "outlined"
 					}),
 
 					checkboxgroup({
@@ -225,27 +257,29 @@ export class Form extends Page {
 
 
 					radio({
-						label: "Radio with type='button'",
-						type: "button",
-						name: "radio-button",
-						value: "option1",
-						options: [
-							{text: "Option 1", value: "option1"},
-							{text: "Option 2", value: "option2"},
-							{text: "Option 3", value: "option3"}
-						]}
+							label: "Radio with type='button'",
+							type: "button",
+							name: "radio-button",
+							value: "option1",
+							options: [
+								{text: "Option 1", value: "option1"},
+								{text: "Option 2", value: "option2"},
+								{text: "Option 3", value: "option3"}
+							]
+						}
 					),
 
 					radio({
-						label: "Radio with type='box'",
-						type: "box",
-						name: "radio-box",
-						value: "option1",
-						options: [
-							{text: "Option 1", value: "option1"},
-							{text: "Option 2", value: "option2"},
-							{text: "Option 3", value: "option3"}
-						]}
+							label: "Radio with type='box'",
+							type: "box",
+							name: "radio-box",
+							value: "option1",
+							options: [
+								{text: "Option 1", value: "option1"},
+								{text: "Option 2", value: "option2"},
+								{text: "Option 3", value: "option3"}
+							]
+						}
 					),
 				),
 
@@ -262,22 +296,18 @@ export class Form extends Page {
 						})
 					)
 				),
-				fieldset({legend: "Array field"},
 
-					p("Array fields can be used to represent an array of objects like contact e-mail addresses for example."),
+				fieldset({legend: "Map field"},
 
-					arrayfield({
-						name: "arrayfield",
-						/**
-						 * This function is called to create form fields for each array item.
-						 * Typically, a container field will be used.
-						 */
-						itemComponent:  () => {
-							return 	containerfield({
-								cls: "hbox gap",
+					mapfield({
+						name: "mapfield",
+						buildField: () => {
+							return containerfield({
+									cls: "hbox gap",
 								},
 
 								select({
+									name: "type",
 									width: 100,
 									label: "Type",
 									options: [
@@ -296,15 +326,70 @@ export class Form extends Page {
 									label: "E-mail",
 									name: "email",
 								}),
-								btn({
-									style: {
-										alignSelf: "center"
-									},
-									icon: "delete",
-									title: "Delete",
-									handler: (btn) => {
-										btn.parent!.remove();
-									}
+							)
+						},
+
+						value: {
+							"key1": {
+								type: "work",
+								email: "john@work.com"
+							},
+
+							"key2": {
+								type: "home",
+								email: "john@home.com"
+							}
+						}
+					}),
+
+					tbar({},
+						'->',
+						btn({
+							icon: "add",
+							cls: "outlined",
+							text: "Add new value",
+							handler: () => {
+								const fld = this.form.findField<MapField>("mapfield")!;
+								fld.add({})
+							}
+						})
+					)
+				),
+
+				fieldset({legend: "Array field"},
+
+					p("Array fields can be used to represent an array of objects like contact e-mail addresses for example."),
+
+					arrayfield({
+						name: "arrayfield",
+						/**
+						 * This function is called to create form fields for each array item.
+						 * Typically, a container field will be used.
+						 */
+						buildField: () => {
+							return containerfield({
+									cls: "hbox gap",
+								},
+
+								select({
+									name: "type",
+									width: 100,
+									label: "Type",
+									options: [
+										{
+											value: "work",
+											name: "Work"
+										},
+										{
+											value: "home",
+											name: "Home"
+										}
+									]
+								}),
+								textfield({
+									flex: 1,
+									label: "E-mail",
+									name: "email",
 								})
 							)
 						},
@@ -312,16 +397,17 @@ export class Form extends Page {
 							type: "work",
 							email: "john@work.com"
 						},
-						{
-							type: "home",
-							email: "john@home.com"
-						}]
+							{
+								type: "home",
+								email: "john@home.com"
+							}]
 					}),
 					tbar({},
 						'->',
 						btn({
 							icon: "add",
-							title: "Add new value",
+							cls: "outlined",
+							text: "Add new value",
 							handler: () => {
 								const arrayField = this.form.findField("arrayfield")!;
 								arrayField.value = arrayField.value.concat([{
@@ -331,11 +417,9 @@ export class Form extends Page {
 							}
 						})
 					)
-
-
 				),
 
-				tbar({ cls: "bottom" },
+				tbar({cls: "bottom"},
 
 					"->",
 

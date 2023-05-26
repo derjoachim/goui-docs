@@ -1,4 +1,4 @@
-import {Component, comp, btn, h1, Button} from "@intermesh/goui";
+import {btn, Button, comp, Component, h1} from "@intermesh/goui";
 
 export class Page extends Component {
 
@@ -6,6 +6,7 @@ export class Page extends Component {
 
 	private titleEl: Component
 	private sourceBtn: Button;
+
 	constructor() {
 		super("section");
 
@@ -15,13 +16,15 @@ export class Page extends Component {
 
 				comp({flex: 1}),
 
-				this.sourceBtn = btn({
-					cls: "accent outlined",
-					text: "Source on GitHub",
-					handler:() => {
-						window.open('https://github.com/intermesh/goui-docs/tree/main/script/' + this.sourceURL);
-					}
-				})
+				comp({style: {alignSelf: "center"}},
+					this.sourceBtn = btn({
+						cls: "accent outlined",
+						text: "Source on GitHub",
+						handler: () => {
+							window.open('https://github.com/intermesh/goui-docs/tree/main/script/' + this.sourceURL);
+						}
+					})
+				)
 			)
 		);
 	}

@@ -7,7 +7,6 @@ export class Component extends Page {
 		this.title = "Component";
 
 		this.items.add(
-
 			p("The Component class is the base of all components. All components extend this class. <br />" +
 				"Components are mostly created with a create function. For example a 'Table' is created with 'table()'. " +
 				"These helper functions take child components as second argument. This makes it possible to write " +
@@ -18,7 +17,7 @@ export class Component extends Page {
 			p("You can also see in the example above that component has multiple helper " +
 				"functions to create text easily like h1, h2, h3, h4, p, section and code. <br />" +
 				"The code above outputs:")
-,
+			,
 			comp({cls: "special-css"},
 				h1("Example"),
 
@@ -36,7 +35,6 @@ export class Component extends Page {
 						name: "text",
 						label: "Text"
 					})
-
 				)
 			)
 		)

@@ -7,11 +7,9 @@ export class NotFound extends Page {
 		this.title = "Not found";
 
 		this.items.add(
-
 			p({
 				html: "Sorry, the page you were looking for is not found."
 			})
-
 		)
 	}
 }
