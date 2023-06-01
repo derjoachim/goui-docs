@@ -110,8 +110,8 @@ export class Data extends Page {
 			],
 			listeners: {
 
-
 				navigate: (list, storeIndex) => {
+					//problem is that record is a reference in the store and the reload won't update
 					const record = list.store.get(storeIndex);
 					this.form.setValues(record);
 					this.form.disabled = false;
