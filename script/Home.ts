@@ -40,26 +40,8 @@ export class Home extends Page {
 			h2("Get started"),
 
 			p(
-				"To get started take these steps to install a very simple 'Hello World' example." +
-				" We assume you have the tools '<a href=\"https://git-scm.com/\">git</a>' and " +
-				"'<a href=\"https://www.npmjs.com/\">npm</a>' installed."
+				"To get started can install a very simple 'Hello World' example. Go to the template repository here: <a href=\"https://github.com/Intermesh/goui-hello-world.git\">https://github.com/Intermesh/goui-hello-world.git</a>."
 			),
-
-			code("git clone https://github.com/Intermesh/goui-hello-world.git"),
-
-			code("cd goui-hello-world"),
-
-			code("npm install"),
-
-			code("npm start"),
-
-			btn({
-				cls: "filled",
-				text: "Open http://localhost:8081",
-				handler: () => {
-					window.open("http://localhost:8081");
-				}
-			})
 		)
 	}
 }

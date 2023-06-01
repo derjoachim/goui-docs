@@ -1,4 +1,4 @@
-import {btn, cards, comp, Component, h2, h3, hr, menu, root, router, splitter} from "@intermesh/goui";
+import {btn, cards, comp, Component, h2, h3, hr, menu, p, root, router, small, splitter} from "@intermesh/goui";
 import {Button} from "./Button.js";
 import {Form} from "./Form.js";
 import {Window} from "./Window.js";
@@ -17,7 +17,7 @@ import {DragAndDrop} from "./DragAndDrop";
 /**
  * Create main card panel for displaying SPA pages
  */
-const main = cards({cls: "main scroll", flex: 1});
+const main = cards({cls: "main", flex: 1});
 
 const img = comp({
 	tagName: "img",
@@ -39,9 +39,17 @@ const header = comp({
 
 	comp({
 		cls: "hbox",
+		flex: 1
 	},
 		img,
-		h2({text: "GOUI", style: {padding: "0", margin: "0", alignSelf: "center"}})
+		h2({text: "GOUI", flex: 1}),
+		comp({
+			tagName: "a",
+			attr: {
+				href: "https://github.com/intermesh/goui"
+			},
+			html: '<img src="resources/github.png">'
+		})
 	),
 
 )
@@ -198,13 +206,20 @@ router
 
 			header,
 			comp({
-				cls: "hbox"
+				cls: "hbox",
+				flex: 1
 			},
 				mainMenu,
 				// splitter({
 				// 	resizeComponentPredicate: mainMenu
 				// }),
-				main
+				comp({
+					flex: 1,
+					cls: "scroll"
+				},
+					main
+
+				)
 			),
 			comp({
 				cls: "overlay",
