@@ -13,6 +13,7 @@ import {Component as ComponentPage} from "./Component.js";
 import {Data} from "./Data.js";
 import {Table} from "./Table.js";
 import {DragAndDrop} from "./DragAndDrop";
+import {Router} from "./Router";
 
 /**
  * Create main card panel for displaying SPA pages
@@ -87,6 +88,11 @@ const mainMenu = menu({
 	btn({
 		text: "Data",
 		route: "data"
+	}),
+
+	btn({
+		text: "Router",
+		route: "router"
 	}),
 
 	h3({
@@ -192,6 +198,9 @@ router
 	})
 	.add(/^draganddrop$/, () => {
 		pageLoader(DragAndDrop);
+	})
+	.add(/^router$/, () => {
+		pageLoader(Router);
 	})
 	.add(() => {
 		pageLoader(NotFound);
