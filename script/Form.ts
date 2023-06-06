@@ -7,14 +7,14 @@ import {
 	checkboxgroup,
 	colorfield,
 	column,
-	containerfield,
+	containerfield, datecolumn,
 	datefield,
 	DateTime,
 	Field,
 	fieldset,
 	form,
 	Form as GouiForm,
-	htmlfield,
+	htmlfield, list,
 	mapfield,
 	MapField, numberfield,
 	p,
@@ -27,7 +27,8 @@ import {
 	tbar,
 	textarea,
 	textfield,
-	Window
+	chips,
+	Window, menu, tablepicker, datepicker, colorpicker, Menu, TextField, FunctionUtil, TablePicker
 } from "@intermesh/goui";
 
 export class Form extends Page {
@@ -39,8 +40,13 @@ export class Form extends Page {
 		this.title = "Form";
 		this.sourceURL = "Form.ts";
 
+		type AutoCompleteRecord = {
+			id: number,
+			description: string,
+			createdAt: string
+		}
 		// Create some records to use for the autocomplete store below
-		const autocompleteRecords: StoreRecord[] = [];
+		const autocompleteRecords: AutoCompleteRecord[] = [];
 
 		for (let i = 1; i <= 20; i++) {
 			autocompleteRecords.push({
@@ -49,6 +55,7 @@ export class Form extends Page {
 				createdAt: (new DateTime()).addDays(Math.ceil(Math.random() * -365)).format("c")
 			});
 		}
+
 
 
 		this.items.add(
@@ -63,6 +70,35 @@ export class Form extends Page {
 				},
 
 				p("Forms can handle complex object structures using Container and Array type fields. They don't submit in the traditional way but return a Javascript Object that can be sent using an XHR or fetch API request. To see how this works fill in some data and press 'Save' below."),
+
+				fieldset({
+						legend: "Chip fields"
+					},
+
+					chips({
+						label: "Chips",
+						value: ["Apple", "Banana", "Coconut"]
+					}),
+
+					chips({
+						label: "Chips",
+
+						value: [
+							{id: "1", name: "John"},
+							{id: "2", name: "Pete"}
+						],
+						textInputToValue: async (text) => {
+							return {
+								id: "3",
+								name: text
+							}
+						},
+						chipRenderer: async (chip, value) => {
+							chip.text = value.name;
+						}
+
+					})
+				),
 
 				fieldset({
 						legend: "Text fields"
@@ -154,8 +190,18 @@ export class Form extends Page {
 						// required: true,
 						label: "Autocomplete",
 						name: "autocomplete",
-						displayProperty: "description",
-						valueProperty: "id", // if omitted the whole record will be the value.
+
+						pickerRecordToValue: (field, record) => {
+							return record.id;
+						},
+
+						async valueToTextField (field, value: any): Promise<string> {
+							const record = field.table.store.find(r => r.id == value);
+							return record ? record.description : "";
+						},
+
+						value: 3,
+
 						buttons: [
 							btn({
 								icon: "clear",
@@ -168,7 +214,6 @@ export class Form extends Page {
 						listeners: {
 
 							autocomplete: (field, text) => {
-
 								//clone the array for filtering
 								const filtered = autocompleteRecords.filter((r) => {
 									// console.warn(r.description, text, r.description.indexOf(text))
@@ -179,24 +224,26 @@ export class Form extends Page {
 								field.table.store.loadData(filtered, false)
 							}
 						},
-						table: table({
+
+						table: tablepicker({
 							headers: false,
-							store: store({
+							store: store<AutoCompleteRecord>({
+								data: autocompleteRecords,
 								sort: [{
 									property: "description",
 									isAscending: true
 								}]
 							}),
-
 							columns: [
 								column({
+									header: "Description",
 									id: "description",
 									sortable: true,
-									resizable: true,
-									width: 300
+									resizable: true
 								})
 							]
 						})
+
 					}),
 
 
