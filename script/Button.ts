@@ -277,7 +277,7 @@ export class Button extends Page {
 						listeners: {
 							select: (colorPicker, color) => {
 								const menu = (colorPicker.parent as Menu);
-								menu.parentButton!.el.style.color = "#" + color;
+								menu.parent!.el.style.color = "#" + color;
 								menu.hide();
 							}
 						}

@@ -21,10 +21,16 @@ nav.main {
 		margin: 0;
 	}
 
+
+
 	> div.goui.hbox {
 		align-items: center;
 	}
 	 a {
+		 color:white;
+		 text-decoration: none;
+		 font-family: courier;
+		 font-weight: bold;
 		margin-right: 16px;
 		img {
 			display: block;
@@ -43,6 +49,11 @@ menu.main, menu.demo {
 	padding: 8px;
 	background-color: #efeff2;
 	border-right: 1px solid $colorBorder;
+
+	.goui-button {
+		width: 100%;
+		text-align: left;
+	}
 }
 
 section {

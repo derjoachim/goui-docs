@@ -28,7 +28,7 @@ import {
 	textarea,
 	textfield,
 	chips,
-	Window, menu, tablepicker, datepicker, colorpicker, Menu, TextField, FunctionUtil, TablePicker
+	Window, menu, tablepicker, datepicker, colorpicker, Menu, TextField, FunctionUtil, TablePicker, root
 } from "@intermesh/goui";
 
 export class Form extends Page {
@@ -56,7 +56,32 @@ export class Form extends Page {
 			});
 		}
 
+		const chipsTablePicker = tablepicker({
+			headers: false,
+			store: store<AutoCompleteRecord>({
+				data: autocompleteRecords,
+				sort: [{
+					property: "description",
+					isAscending: true
+				}]
+			}),
+			columns: [
+				column({
+					header: "Description",
+					id: "description",
+					sortable: true,
+					resizable: true
+				})
+			]
+		});
 
+		const chipsAutoMenu = menu({
+			cls: "goui-dropdown scroll",
+			removeOnClose: false,
+			height: 300
+		},
+			chipsTablePicker
+		)
 
 		this.items.add(
 			this.form = form({
@@ -76,13 +101,14 @@ export class Form extends Page {
 					},
 
 					chips({
-						label: "Chips",
+						name: "fruits",
+						label: "Fruits",
 						value: ["Apple", "Banana", "Coconut"]
 					}),
 
 					chips({
-						label: "Chips",
-
+						label: "Custom autocomplete chips",
+						name: "customChips",
 						value: [
 							{id: "1", name: "John"},
 							{id: "2", name: "Pete"}
@@ -95,6 +121,59 @@ export class Form extends Page {
 						},
 						chipRenderer: async (chip, value) => {
 							chip.text = value.name;
+						},
+
+						listeners: {
+							render: comp => {
+
+								chipsTablePicker.on('select', (tablePicker, record) => {
+									comp.value = comp.value.concat([{
+										id: record.id,
+										name: record.description
+									}]);
+
+									chipsAutoMenu.hide();
+									comp.editor.el.innerText = "";
+
+									comp.focus();
+								})
+
+								comp.editor.el.addEventListener('input', FunctionUtil.buffer(300, () => {
+									chipsAutoMenu.showFor(comp.wrap);
+
+									const text = comp.editor.el.innerText;
+
+									//clone the array for filtering
+									const filtered = structuredClone(autocompleteRecords).filter((r:AutoCompleteRecord) => {
+										// console.warn(r.description, text, r.description.indexOf(text))
+										return !text || r.description.toLowerCase().indexOf(text.toLowerCase()) === 0;
+									});
+
+									//simple local filter on the store
+									chipsTablePicker.store.loadData(filtered, false);
+								}));
+
+								comp.editor.el.addEventListener('keydown', (ev) => {
+
+									switch ((ev as KeyboardEvent).key) {
+										case 'ArrowDown':
+											ev.preventDefault();
+											chipsAutoMenu.showFor(comp.wrap);
+											chipsTablePicker.focus();
+											break;
+
+										case 'Escape':
+											if (!chipsAutoMenu.hidden) {
+												chipsAutoMenu.hide();
+												ev.preventDefault();
+												ev.stopPropagation();
+												this.focus();
+											}
+											break;
+									}
+								});
+
+							}
 						}
 
 					})
@@ -196,7 +275,7 @@ export class Form extends Page {
 						},
 
 						async valueToTextField (field, value: any): Promise<string> {
-							const record = field.table.store.find(r => r.id == value);
+							const record = field.picker.store.find(r => r.id == value);
 							return record ? record.description : "";
 						},
 
@@ -215,17 +294,17 @@ export class Form extends Page {
 
 							autocomplete: (field, text) => {
 								//clone the array for filtering
-								const filtered = autocompleteRecords.filter((r) => {
+								const filtered = autocompleteRecords.filter((r:AutoCompleteRecord) => {
 									// console.warn(r.description, text, r.description.indexOf(text))
 									return !text || r.description.toLowerCase().indexOf(text.toLowerCase()) === 0;
 								});
 
 								//simple local filter on the store
-								field.table.store.loadData(filtered, false)
+								field.picker.store.loadData(filtered, false)
 							}
 						},
 
-						table: tablepicker({
+						picker: tablepicker({
 							headers: false,
 							store: store<AutoCompleteRecord>({
 								data: autocompleteRecords,

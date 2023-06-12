@@ -47,9 +47,16 @@ const header = comp({
 		comp({
 			tagName: "a",
 			attr: {
+				href: "https://goui.io/api"
+			},
+			html: 'API'
+		}),
+		comp({
+			tagName: "a",
+			attr: {
 				href: "https://github.com/intermesh/goui"
 			},
-			html: '<img src="resources/github.png">'
+			html: '<img src="resources/github.png" alt="GitHub" width="30" height="30">'
 		})
 	),
 
