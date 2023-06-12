@@ -6,13 +6,14 @@ import {
 	datasourcestore,
 	datecolumn,
 	form,
-	Form,
+	Form, h2,
 	Notifier,
 	p,
 	table,
 	textfield
 } from "@intermesh/goui";
 import {demoDataSource, DemoEntity} from "./DemoDataSource";
+import {RestApiExample} from "./RestApiExample";
 
 
 export class Data extends Page {
@@ -42,7 +43,10 @@ export class Data extends Page {
 			comp({cls: "hbox gap"},
 				comp({width: 300, cls: "frame"}, this.table),
 				this.form
-			)
+			),
+
+
+			new RestApiExample()
 		);
 	}
 
