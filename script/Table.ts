@@ -112,7 +112,7 @@ export class Table extends Page {
 
 			listeners: {
 				navigate: (list, storeIndex) => {
-					list.store.get(storeIndex).createdAt;
+					list.store.get(storeIndex)!.createdAt;
 				},
 
 				render: sender => {
@@ -143,7 +143,12 @@ export class Table extends Page {
 			}),
 
 			rowSelectionConfig: {
-				multiSelect: true
+				multiSelect: true,
+				listeners: {
+					selectionchange: rowSelect => {
+						console.log("selectionchange", rowSelect.selected);
+					}
+				}
 			},
 			groupBy: "group",
 
@@ -184,7 +189,7 @@ export class Table extends Page {
 			listeners: {
 
 				navigate: (list, storeIndex) => {
-					console.log(list.store.get(storeIndex).createdAt);
+					console.log(list.store.get(storeIndex)!.createdAt);
 				},
 
 				render: sender => {

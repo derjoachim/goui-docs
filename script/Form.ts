@@ -5,30 +5,31 @@ import {
 	btn,
 	checkbox,
 	checkboxgroup,
+	chips,
 	colorfield,
-	column,
-	containerfield, datecolumn,
+	column, comp,
+	containerfield,
 	datefield,
 	DateTime,
 	Field,
 	fieldset,
 	form,
 	Form as GouiForm,
-	htmlfield, list,
+	FunctionUtil,
+	htmlfield, listpicker,
 	mapfield,
-	MapField, numberfield,
+	MapField,
+	menu,
+	numberfield,
 	p,
 	radio,
 	recurrencefield,
 	select,
-	store,
-	StoreRecord,
-	table,
+	store, table,
 	tbar,
 	textarea,
 	textfield,
-	chips,
-	Window, menu, tablepicker, datepicker, colorpicker, Menu, TextField, FunctionUtil, TablePicker, root
+	Window
 } from "@intermesh/goui";
 
 export class Form extends Page {
@@ -55,24 +56,27 @@ export class Form extends Page {
 				createdAt: (new DateTime()).addDays(Math.ceil(Math.random() * -365)).format("c")
 			});
 		}
+		const chipsTablePicker = listpicker({
 
-		const chipsTablePicker = tablepicker({
-			headers: false,
-			store: store<AutoCompleteRecord>({
-				data: autocompleteRecords,
-				sort: [{
-					property: "description",
-					isAscending: true
-				}]
-			}),
-			columns: [
-				column({
-					header: "Description",
-					id: "description",
-					sortable: true,
-					resizable: true
-				})
-			]
+			list: table({
+				fitParent: true,
+				headers: false,
+				store: store<AutoCompleteRecord>({
+					data: autocompleteRecords,
+					sort: [{
+						property: "description",
+						isAscending: true
+					}]
+				}),
+				columns: [
+					column({
+						header: "Description",
+						id: "description",
+						sortable: true,
+						resizable: true
+					})
+				]
+			})
 		});
 
 		const chipsAutoMenu = menu({
@@ -150,7 +154,7 @@ export class Form extends Page {
 									});
 
 									//simple local filter on the store
-									chipsTablePicker.store.loadData(filtered, false);
+									chipsTablePicker.list.store.loadData(filtered, false);
 								}));
 
 								comp.editor.el.addEventListener('keydown', (ev) => {
@@ -275,7 +279,7 @@ export class Form extends Page {
 						},
 
 						async valueToTextField (field, value: any): Promise<string> {
-							const record = field.picker.store.find(r => r.id == value);
+							const record = field.list.store.find(r => r.id == value);
 							return record ? record.description : "";
 						},
 
@@ -300,12 +304,13 @@ export class Form extends Page {
 								});
 
 								//simple local filter on the store
-								field.picker.store.loadData(filtered, false)
+								field.list.store.loadData(filtered, false)
 							}
 						},
 
-						picker: tablepicker({
+						list: table({
 							headers: false,
+							fitParent: true,
 							store: store<AutoCompleteRecord>({
 								data: autocompleteRecords,
 								sort: [{
@@ -322,6 +327,7 @@ export class Form extends Page {
 								})
 							]
 						})
+
 
 					}),
 
