@@ -1,4 +1,19 @@
-import {btn, cards, comp, Component, h2, h3, hr, menu, p, root, router, small, splitter} from "@intermesh/goui";
+import {
+	btn,
+	cards,
+	checkboxgroup,
+	comp,
+	Component,
+	h2,
+	h3,
+	hr, Menu,
+	menu,
+	p, radio,
+	root,
+	router,
+	small,
+	splitter
+} from "@intermesh/goui";
 import {Button} from "./Button.js";
 import {Form} from "./Form.js";
 import {Window} from "./Window.js";
@@ -27,8 +42,8 @@ const img = comp({
 img.el.setAttribute("src", "./resources/groupoffice-icon.png");
 
 const header = comp({
-	tagName: "nav",
-	cls: "main hbox"
+	tagName: "header",
+	cls: "hbox"
 },
 	btn({
 		icon: "menu",
@@ -57,6 +72,32 @@ const header = comp({
 				href: "https://github.com/intermesh/goui"
 			},
 			html: '<img src="resources/github.png" alt="GitHub" width="30" height="30">'
+		}),
+		btn({
+			icon: "format_color_fill",
+			menu: menu({
+				cls: "expand-left"
+				},
+					radio({
+						type: "box",
+						name: "theme",
+						value: "system",
+						options: [
+							{text: "System", value: "system"},
+							{text: "Light", value: "light"},
+							{text: "Dark", value: "dark"}
+						],
+						listeners: {
+								change: (field, newValue, oldValue) => {
+									root.el.classList.toggle("dark", newValue == "dark");
+									root.el.classList.toggle("light", newValue == "light");
+									root.el.classList.toggle("system", newValue == "system");
+
+									field.findAncestorByType(Menu)!.close();
+								}
+						}
+					})
+				)
 		})
 	),
 
@@ -66,7 +107,7 @@ const header = comp({
  * Create main menu
  */
 const mainMenu = menu({
-		cls: "main",
+		cls: "main-menu",
 		listeners: {
 				render: menu => {
 					menu.el.addEventListener("click", () => {
@@ -231,7 +272,7 @@ router
 				// }),
 				comp({
 					flex: 1,
-					cls: "scroll"
+					cls: "scroll main"
 				},
 					main
 

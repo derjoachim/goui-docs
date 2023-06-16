@@ -11,8 +11,8 @@ body {
 }
 
 
-nav.main {
-	background-color: #1E1246;
+header {
+	background-color: var(--bg-header);
 	color: white;
 	align-items: center;
 
@@ -42,13 +42,12 @@ nav.main {
 	min-height: 100%;
 }
 
-menu.main, menu.demo {
+menu.main-menu, menu.demo {
 	height: 100%;
 	width: 200px;
 	list-style: none;
 	padding: 8px;
-	background-color: #efeff2;
-	border-right: 1px solid $colorBorder;
+	background-color: var(--bg-side-bar);
 
 	.goui-button {
 		width: 100%;
