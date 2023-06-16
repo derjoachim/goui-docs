@@ -10,6 +10,14 @@ body {
 	display: flex;
 }
 
+a {
+	color: var(--c-primary);
+
+	&:visited {
+		color: var(--c-secondary);
+	}
+}
+
 
 header {
 	background-color: var(--bg-header);
