@@ -4,7 +4,10 @@
     <script type="module" src="dist/Index.js"></script>
 
     <title>Group-Office User Interface - Documentation</title>
-    <meta theme-color="black">
+
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#1E1246" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -18,3 +21,22 @@
     <link rel="preload" href="./node_modules/@intermesh/goui/resources/font/Lato-Bold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="preload" href="./node_modules/@intermesh/goui/resources/font/Lato-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="preload" href="./node_modules/@intermesh/goui/resources/iconfont/material-icons-round.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+
+    <!-- Matomo -->
+    <script>
+			var _paq = window._paq = window._paq || [];
+			/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+			_paq.push(['trackPageView']);
+			_paq.push(['enableLinkTracking']);
+			(function() {
+				var u="//analytics.groupoffice.net/";
+				_paq.push(['setTrackerUrl', u+'matomo.php']);
+				_paq.push(['setSiteId', '3']);
+				var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+				g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+			})();
+    </script>
+    <!-- End Matomo Code -->
+</head>
+
+<body class="system"></body>

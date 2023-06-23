@@ -6,13 +6,14 @@ import {
 	datasourcestore,
 	datecolumn,
 	form,
-	Form,
+	Form, h2,
 	Notifier,
 	p,
 	table,
 	textfield
 } from "@intermesh/goui";
 import {demoDataSource, DemoEntity} from "./DemoDataSource";
+import {RestApiExample} from "./RestApiExample";
 
 
 export class Data extends Page {
@@ -42,7 +43,10 @@ export class Data extends Page {
 			comp({cls: "hbox gap"},
 				comp({width: 300, cls: "frame"}, this.table),
 				this.form
-			)
+			),
+
+
+			new RestApiExample()
 		);
 	}
 
@@ -52,7 +56,7 @@ export class Data extends Page {
 				disabled: true,
 				handler: async (form) => {
 					const entity = form.getValues() as DemoEntity;
-					entity.id = this.table.store.get(this.table.rowSelection!.selected[0]).id;
+					entity.id = this.table.store.get(this.table.rowSelection!.selected[0])!.id;
 					await demoDataSource.update(entity);
 
 					Notifier.success("The record was updated. The change is immediately updated in the list.");
@@ -110,9 +114,9 @@ export class Data extends Page {
 			],
 			listeners: {
 
-
 				navigate: (list, storeIndex) => {
-					const record = list.store.get(storeIndex);
+					//problem is that record is a reference in the store and the reload won't update
+					const record = list.store.get(storeIndex)!;
 					this.form.setValues(record);
 					this.form.disabled = false;
 				},

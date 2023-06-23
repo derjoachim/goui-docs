@@ -13,10 +13,6 @@ import {
     SetRequest
 } from "@intermesh/goui";
 
-
-// we can't use this when generating data
-browserStoreConnection.enabled = false;
-
 const data: Record<EntityID, DemoEntity> = {};
 
 
@@ -43,6 +39,11 @@ for (let i = 1; i <= max; i++) {
  * This Demo data source fill itself with 10 Demo records
  */
 export class DemoDataSource extends AbstractDataSource<DemoEntity> {
+
+	/**
+	 * Don't store it in the browser storage
+	 */
+	persist = false;
 
 	protected async internalCommit(params: SetRequest<DemoEntity>) {
 

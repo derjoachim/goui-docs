@@ -1,5 +1,5 @@
 import {Page} from "./Page.js";
-import {btn, comp, h2, win, Window as GouiWindow} from "@intermesh/goui";
+import {btn, comp, fieldset, form, h2, htmlfield, t, tbar, textfield, win, Window as GouiWindow} from "@intermesh/goui";
 
 export class Window extends Page {
 	sourceURL = "Window.ts";
@@ -79,6 +79,68 @@ export class Window extends Page {
 					).show();
 				}
 			}),
+
+			btn({
+				text: "Dialog with form",
+				handler: () => {
+					win({
+							title: "Dialog with form",
+							draggable: true,
+							width: 600,
+							height: 400,
+							closable: true,
+							maximizable: true,
+							resizable: true,
+							collapsible: true
+						},
+
+						form({
+								flex: 1,
+								cls: "vbox",
+								handler: (f) => {
+									GouiWindow.alert("<code>" + JSON.stringify(f.getValues(), null, 4) + "</code>");
+								}
+							},
+
+							fieldset({
+									cls: "scroll",
+									flex: 1
+								},
+
+								textfield({
+									label: t("Subject"),
+									name: "subject",
+									required: true,
+
+								}),
+
+								htmlfield({
+									name: "body",
+									label: t("Body")
+								})
+							),
+
+							tbar({},
+								btn({
+									type: "button",
+									text: t("Attach files"),
+									icon: "attach_file"
+								}),
+
+								'->',
+
+								btn({
+									type: "submit",
+									text: t("Send")
+								})
+							)
+						)
+					).show();
+				}
+			})
+
+
+			,
 
 
 			h2({

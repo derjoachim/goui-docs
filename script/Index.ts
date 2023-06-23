@@ -1,4 +1,19 @@
-import {btn, cards, comp, Component, h2, h3, hr, menu, root, router, splitter} from "@intermesh/goui";
+import {
+	btn,
+	cards,
+	checkboxgroup,
+	comp,
+	Component,
+	h2,
+	h3,
+	hr, Menu,
+	menu,
+	p, radio,
+	root,
+	router,
+	small,
+	splitter
+} from "@intermesh/goui";
 import {Button} from "./Button.js";
 import {Form} from "./Form.js";
 import {Window} from "./Window.js";
@@ -13,11 +28,12 @@ import {Component as ComponentPage} from "./Component.js";
 import {Data} from "./Data.js";
 import {Table} from "./Table.js";
 import {DragAndDrop} from "./DragAndDrop";
+import {Router} from "./Router";
 
 /**
  * Create main card panel for displaying SPA pages
  */
-const main = cards({cls: "main scroll", flex: 1});
+const main = cards({cls: "main", flex: 1});
 
 const img = comp({
 	tagName: "img",
@@ -26,8 +42,8 @@ const img = comp({
 img.el.setAttribute("src", "./resources/groupoffice-icon.png");
 
 const header = comp({
-	tagName: "nav",
-	cls: "main hbox"
+	tagName: "header",
+	cls: "hbox"
 },
 	btn({
 		icon: "menu",
@@ -39,9 +55,50 @@ const header = comp({
 
 	comp({
 		cls: "hbox",
+		flex: 1
 	},
 		img,
-		h2({text: "GOUI", style: {padding: "0", margin: "0", alignSelf: "center"}})
+		h2({text: "GOUI", flex: 1}),
+		comp({
+			tagName: "a",
+			attr: {
+				href: "https://goui.io/api"
+			},
+			html: 'API'
+		}),
+		comp({
+			tagName: "a",
+			attr: {
+				href: "https://github.com/intermesh/goui"
+			},
+			html: '<img src="resources/github.png" alt="GitHub" width="30" height="30">'
+		}),
+		btn({
+			icon: "format_color_fill",
+			menu: menu({
+				cls: "expand-left"
+				},
+					radio({
+						type: "box",
+						name: "theme",
+						value: "system",
+						options: [
+							{text: "System", value: "system"},
+							{text: "Light", value: "light"},
+							{text: "Dark", value: "dark"}
+						],
+						listeners: {
+								change: (field, newValue, oldValue) => {
+									root.el.classList.toggle("dark", newValue == "dark");
+									root.el.classList.toggle("light", newValue == "light");
+									root.el.classList.toggle("system", newValue == "system");
+
+									field.findAncestorByType(Menu)!.close();
+								}
+						}
+					})
+				)
+		})
 	),
 
 )
@@ -50,7 +107,7 @@ const header = comp({
  * Create main menu
  */
 const mainMenu = menu({
-		cls: "main",
+		cls: "main-menu",
 		listeners: {
 				render: menu => {
 					menu.el.addEventListener("click", () => {
@@ -79,6 +136,11 @@ const mainMenu = menu({
 	btn({
 		text: "Data",
 		route: "data"
+	}),
+
+	btn({
+		text: "Router",
+		route: "router"
 	}),
 
 	h3({
@@ -185,6 +247,9 @@ router
 	.add(/^draganddrop$/, () => {
 		pageLoader(DragAndDrop);
 	})
+	.add(/^router$/, () => {
+		pageLoader(Router);
+	})
 	.add(() => {
 		pageLoader(NotFound);
 	})
@@ -198,13 +263,20 @@ router
 
 			header,
 			comp({
-				cls: "hbox"
+				cls: "hbox",
+				flex: 1
 			},
 				mainMenu,
 				// splitter({
 				// 	resizeComponentPredicate: mainMenu
 				// }),
-				main
+				comp({
+					flex: 1,
+					cls: "scroll main"
+				},
+					main
+
+				)
 			),
 			comp({
 				cls: "overlay",

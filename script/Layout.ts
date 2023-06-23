@@ -50,7 +50,7 @@ export class Layout extends Page {
 				comp({
 					height: 72,
 					cls: "pad",
-					html: "Left",
+					html: "Top",
 					style: {border: "1px dashed red"}
 				}),
 
@@ -64,7 +64,7 @@ export class Layout extends Page {
 				comp({
 					height: 72,
 					cls: "pad",
-					html: "Right",
+					html: "Bottom",
 					style: {border: "1px dashed green"}
 				})
 			),

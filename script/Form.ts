@@ -5,8 +5,9 @@ import {
 	btn,
 	checkbox,
 	checkboxgroup,
+	chips,
 	colorfield,
-	column,
+	column, comp,
 	containerfield,
 	datefield,
 	DateTime,
@@ -14,16 +15,17 @@ import {
 	fieldset,
 	form,
 	Form as GouiForm,
-	htmlfield,
+	FunctionUtil,
+	htmlfield, listpicker,
 	mapfield,
-	MapField, numberfield,
+	MapField,
+	menu,
+	numberfield,
 	p,
 	radio,
 	recurrencefield,
 	select,
-	store,
-	StoreRecord,
-	table,
+	store, table,
 	tbar,
 	textarea,
 	textfield,
@@ -39,8 +41,13 @@ export class Form extends Page {
 		this.title = "Form";
 		this.sourceURL = "Form.ts";
 
+		type AutoCompleteRecord = {
+			id: number,
+			description: string,
+			createdAt: string
+		}
 		// Create some records to use for the autocomplete store below
-		const autocompleteRecords: StoreRecord[] = [];
+		const autocompleteRecords: AutoCompleteRecord[] = [];
 
 		for (let i = 1; i <= 20; i++) {
 			autocompleteRecords.push({
@@ -49,7 +56,36 @@ export class Form extends Page {
 				createdAt: (new DateTime()).addDays(Math.ceil(Math.random() * -365)).format("c")
 			});
 		}
+		const chipsTablePicker = listpicker({
 
+			list: table({
+				fitParent: true,
+				headers: false,
+				store: store<AutoCompleteRecord>({
+					data: autocompleteRecords,
+					sort: [{
+						property: "description",
+						isAscending: true
+					}]
+				}),
+				columns: [
+					column({
+						header: "Description",
+						id: "description",
+						sortable: true,
+						resizable: true
+					})
+				]
+			})
+		});
+
+		const chipsAutoMenu = menu({
+			cls: "goui-dropdown scroll",
+			removeOnClose: false,
+			height: 300
+		},
+			chipsTablePicker
+		)
 
 		this.items.add(
 			this.form = form({
@@ -63,6 +99,89 @@ export class Form extends Page {
 				},
 
 				p("Forms can handle complex object structures using Container and Array type fields. They don't submit in the traditional way but return a Javascript Object that can be sent using an XHR or fetch API request. To see how this works fill in some data and press 'Save' below."),
+
+				fieldset({
+						legend: "Chip fields"
+					},
+
+					chips({
+						name: "fruits",
+						label: "Fruits",
+						value: ["Apple", "Banana", "Coconut"]
+					}),
+
+					chips({
+						label: "Custom autocomplete chips",
+						name: "customChips",
+						value: [
+							{id: "1", name: "John"},
+							{id: "2", name: "Pete"}
+						],
+						textInputToValue: async (text) => {
+							return {
+								id: "3",
+								name: text
+							}
+						},
+						chipRenderer: async (chip, value) => {
+							chip.text = value.name;
+						},
+
+						listeners: {
+							render: comp => {
+
+								chipsTablePicker.on('select', (tablePicker, record) => {
+									comp.value = comp.value.concat([{
+										id: record.id,
+										name: record.description
+									}]);
+
+									chipsAutoMenu.hide();
+									comp.editor.el.innerText = "";
+
+									comp.focus();
+								})
+
+								comp.editor.el.addEventListener('input', FunctionUtil.buffer(300, () => {
+									chipsAutoMenu.showFor(comp.wrap);
+
+									const text = comp.editor.el.innerText;
+
+									//clone the array for filtering
+									const filtered = structuredClone(autocompleteRecords).filter((r:AutoCompleteRecord) => {
+										// console.warn(r.description, text, r.description.indexOf(text))
+										return !text || r.description.toLowerCase().indexOf(text.toLowerCase()) === 0;
+									});
+
+									//simple local filter on the store
+									chipsTablePicker.list.store.loadData(filtered, false);
+								}));
+
+								comp.editor.el.addEventListener('keydown', (ev) => {
+
+									switch ((ev as KeyboardEvent).key) {
+										case 'ArrowDown':
+											ev.preventDefault();
+											chipsAutoMenu.showFor(comp.wrap);
+											chipsTablePicker.focus();
+											break;
+
+										case 'Escape':
+											if (!chipsAutoMenu.hidden) {
+												chipsAutoMenu.hide();
+												ev.preventDefault();
+												ev.stopPropagation();
+												this.focus();
+											}
+											break;
+									}
+								});
+
+							}
+						}
+
+					})
+				),
 
 				fieldset({
 						legend: "Text fields"
@@ -154,8 +273,18 @@ export class Form extends Page {
 						// required: true,
 						label: "Autocomplete",
 						name: "autocomplete",
-						displayProperty: "description",
-						valueProperty: "id", // if omitted the whole record will be the value.
+
+						pickerRecordToValue: (field, record) => {
+							return record.id;
+						},
+
+						async valueToTextField (field, value: any): Promise<string> {
+							const record = field.list.store.find(r => r.id == value);
+							return record ? record.description : "";
+						},
+
+						value: 3,
+
 						buttons: [
 							btn({
 								icon: "clear",
@@ -168,35 +297,38 @@ export class Form extends Page {
 						listeners: {
 
 							autocomplete: (field, text) => {
-
 								//clone the array for filtering
-								const filtered = autocompleteRecords.filter((r) => {
+								const filtered = autocompleteRecords.filter((r:AutoCompleteRecord) => {
 									// console.warn(r.description, text, r.description.indexOf(text))
 									return !text || r.description.toLowerCase().indexOf(text.toLowerCase()) === 0;
 								});
 
 								//simple local filter on the store
-								field.table.store.loadData(filtered, false)
+								field.list.store.loadData(filtered, false)
 							}
 						},
-						table: table({
+
+						list: table({
 							headers: false,
-							store: store({
+							fitParent: true,
+							store: store<AutoCompleteRecord>({
+								data: autocompleteRecords,
 								sort: [{
 									property: "description",
 									isAscending: true
 								}]
 							}),
-
 							columns: [
 								column({
+									header: "Description",
 									id: "description",
 									sortable: true,
-									resizable: true,
-									width: 300
+									resizable: true
 								})
 							]
 						})
+
+
 					}),
 
 
