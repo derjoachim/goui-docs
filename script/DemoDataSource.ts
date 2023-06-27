@@ -105,9 +105,17 @@ export class DemoDataSource extends AbstractDataSource<DemoEntity> {
 			sorted.forEach((e) => {
 				let pass = true;
 				for (let filterName in params.filter) {
-					if (params.filter[filterName] !== e[filterName]) {
-						pass = false;
-						break;
+
+					if(filterName == "parentId") {
+						if (params.filter[filterName] !== e[filterName]) {
+							pass = false;
+							break;
+						}
+					} else {
+						if (e[filterName].toLowerCase().indexOf(params.filter[filterName].toLowerCase()) == -1) {
+							pass = false;
+							break;
+						}
 					}
 				}
 
