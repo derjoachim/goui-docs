@@ -27,7 +27,7 @@ import {
 	select,
 	store, table,
 	tbar,
-	textarea,
+	textarea, TextField,
 	textfield,
 	Window
 } from "@intermesh/goui";
@@ -58,6 +58,11 @@ export class Form extends Page {
 			});
 		}
 
+		const tf = textfield({
+				label: "Text",
+				name: "text"
+			});
+
 		this.items.add(
 			this.form = form({
 					itemId: "form",
@@ -82,32 +87,66 @@ export class Form extends Page {
 						value: "hiddenValue"
 					}),
 
-					textfield({
-						label: "Basic",
-						name: "basic"
+					tf,
+
+
+						checkbox({
+
+							label: "Disabled",
+							listeners: {
+								change: (field, checked) => {
+									tf.disabled = checked;
+								}
+							}
+						}),
+
+						checkbox({
+
+							label: "Required",
+							listeners: {
+								change: (field, checked) => {
+									tf.required = checked;
+								}
+							}
+						}),
+
+						checkbox({
+
+							label: "Read only",
+							listeners: {
+								change: (field, checked) => {
+									tf.readOnly = checked;
+								}
+							}
+						}),
+
+						checkbox({
+
+							label: "Leading icon",
+							listeners: {
+								change: (field, checked) => {
+									tf.icon = checked ? "favorite" : undefined;
+								}
+							}
+						}),
+
+					checkbox({
+
+						label: "Button",
+						listeners: {
+							change: (field, checked) => {
+								tf.buttons = checked ? [btn({
+									icon: "clear",
+									handler: (clearBtn) => {
+										clearBtn.findAncestorByType(TextField)!.reset();
+									}
+								})] : undefined
+							}
+						}
 					}),
 
-					textfield({
-						itemId: "requiredField",
-						label: "Required field",
-						name: "required",
-						required: true,
-						hint: "This is a required field"
-					}),
 
-					textfield({
-						label: "Read Only",
-						name: "readonly",
-						readOnly: true,
-						value: "This is read only"
-					}),
 
-					textfield({
-						label: "Disabled",
-						name: "disabled",
-						disabled: true,
-						value: "Disabled field"
-					})
 				),
 
 				fieldset({legend: "Number field"},
