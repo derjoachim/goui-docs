@@ -29,7 +29,8 @@ import {
 	tbar,
 	textarea, TextField,
 	textfield,
-	Window
+	Window,
+	combobox
 } from "@intermesh/goui";
 import {demoDataSource} from "./DemoDataSource";
 
@@ -264,6 +265,12 @@ export class Form extends Page {
 						})
 
 
+					}),
+
+					combobox({
+						label: "Combo box",
+						name: "comboBox",
+						dataSource: demoDataSource
 					}),
 
 
