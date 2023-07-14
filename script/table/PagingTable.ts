@@ -1,5 +1,6 @@
-import {column, Component, datecolumn, h2, paginator, table} from "@intermesh/goui";
+import {column, comp, Component, datasourcestore, datecolumn, h2, h3, paginator, table} from "@intermesh/goui";
 import {PagingStore} from "./PagingStore.js";
+import {demoDataSource} from "../DemoDataSource";
 
 export class PagingTable extends Component {
 
@@ -46,7 +47,61 @@ export class PagingTable extends Component {
 
 			paginator({
 				store: s
-			})
+			}),
+
+
+			h3("Paginate on scroll"),
+
+			comp({
+				cls: "scroll frame",
+				height: 300
+			},
+				table({
+					fitParent: true,
+					store: datasourcestore({
+						dataSource: demoDataSource,
+						queryParams: {
+							limit: 20 // limit is required for paging
+						}
+					}),
+					listeners: {
+						render: table => {
+							// register the parent element to load store on scroll down
+							table.store.addScrollLoader(table.parent!.el);
+
+							// load the store initially
+							void table.store.load();
+						}
+					},
+					cls: "frame",
+					columns: [
+						column({
+							header: "ID",
+							id: "id",
+							sortable: true,
+							resizable: true,
+							width: 100,
+							align: "right"
+						}),
+
+						// Omitting width will auto size this to fill the width
+						column({
+							header: "Name",
+							id: "name",
+							sortable: true,
+							resizable: true
+						}),
+
+						// datecolumns have a standard width
+						datecolumn({
+							header: "Created At",
+							id: "createdAt",
+							sortable: true
+						})
+					]
+				})
+			)
+
 		)
 
 		void s.loadNext();
