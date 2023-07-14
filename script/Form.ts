@@ -162,7 +162,10 @@ export class Form extends Page {
 					datefield({
 						label: "Date",
 						name: "date",
-						required: true
+						required: true,
+						minDate: (new DateTime()).addDays(-30),
+						maxDate: (new DateTime()).addDays(-1),
+						hint: "Select a date in the past 30 days"
 					}),
 
 					textfield({
