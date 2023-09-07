@@ -1,5 +1,6 @@
 import {Page} from "./Page.js";
 import {
+	ArrayField,
 	arrayfield,
 	autocomplete,
 	autocompletechips,
@@ -33,7 +34,8 @@ import {
 	textarea,
 	TextField,
 	textfield,
-	Window
+	Window,
+	rangefield
 } from "@intermesh/goui";
 import {demoDataSource} from "./DemoDataSource";
 
@@ -430,7 +432,7 @@ export class Form extends Page {
 							cls: "outlined",
 							text: "Add new value",
 							handler: () => {
-								const fld = this.form.findField<MapField>("mapfield")!;
+								const fld = this.form.findField<MapField>("mapfield") as MapField;
 								fld.add({})
 							}
 						})
@@ -490,11 +492,11 @@ export class Form extends Page {
 							cls: "outlined",
 							text: "Add new value",
 							handler: () => {
-								const arrayField = this.form.findField("arrayfield")!;
-								arrayField.value = arrayField.value.concat([{
+								const arrayField = this.form.findField("arrayfield") as ArrayField;
+								arrayField.addValue({
 									type: "home",
 									email: "another@example.com"
-								}]);
+								});
 							}
 						})
 					)
@@ -595,6 +597,18 @@ export class Form extends Page {
 						}
 					})
 				),
+
+				fieldset({
+					legend: "Range field"
+				},
+					rangefield({
+						name: "rangefield",
+						label: "Range"
+					}),
+					textfield({
+						label: "Test"
+					})
+					),
 
 
 				tbar({cls: "bottom"},
