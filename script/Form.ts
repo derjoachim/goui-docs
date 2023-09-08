@@ -606,7 +606,8 @@ export class Form extends Page {
 						label: "Range"
 					}),
 					textfield({
-						label: "Test"
+						label: "E-mail",
+						type: "email"
 					})
 					),
 
