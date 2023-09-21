@@ -1,19 +1,4 @@
-import {
-	btn,
-	cards,
-	checkboxgroup,
-	comp,
-	Component,
-	h2,
-	h3,
-	hr, Menu,
-	menu,
-	p, radio,
-	root,
-	router,
-	small,
-	splitter
-} from "@intermesh/goui";
+import {btn, cards, comp, Component, h2, h3, Menu, menu, radio, root, router} from "@intermesh/goui";
 import {Button} from "./Button.js";
 import {Form} from "./Form.js";
 import {Window} from "./Window.js";
@@ -75,9 +60,7 @@ const header = comp({
 		}),
 		btn({
 			icon: "format_color_fill",
-			menu: menu({
-				cls: "expand-left"
-				},
+			menu: menu({},
 					radio({
 						type: "box",
 						name: "theme",
@@ -88,13 +71,13 @@ const header = comp({
 							{text: "Dark", value: "dark"}
 						],
 						listeners: {
-								change: (field, newValue, oldValue) => {
-									root.el.classList.toggle("dark", newValue == "dark");
-									root.el.classList.toggle("light", newValue == "light");
-									root.el.classList.toggle("system", newValue == "system");
+							change: (field, newValue, oldValue) => {
+								root.el.classList.toggle("dark", newValue == "dark");
+								root.el.classList.toggle("light", newValue == "light");
+								root.el.classList.toggle("system", newValue == "system");
 
-									field.findAncestorByType(Menu)!.close();
-								}
+								field.findAncestorByType(Menu)!.close();
+							}
 						}
 					})
 				)
