@@ -168,9 +168,9 @@ export class Form extends Page {
 						label: "Date",
 						name: "date",
 						required: true,
-						minDate: (new DateTime()).addDays(-30),
+						minDate: (new DateTime()).addYears(-2),
 						maxDate: (new DateTime()).addDays(-1),
-						hint: "Select a date in the past 30 days"
+						hint: "Select a date in the past 2 years"
 					}),
 
 					textfield({
