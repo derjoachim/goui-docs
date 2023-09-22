@@ -280,7 +280,25 @@ export class Form extends Page {
 						label: "Combo box",
 						name: "comboBox",
 						dataSource: demoDataSource,
-						hint: "A combo box is an extension of an autocompletefield and simplifies the creation of a combo box"
+						hint: "A combo box is an extension of an autocompletefield and simplifies the creation of a combo box",
+						listeners: {
+							render:comp => {
+								//group the list by the group column
+								comp.list.groupBy = "group";
+								comp.list.store.queryParams = {
+									filter: {
+										parentId: undefined
+									}
+								};
+								comp.list.store.sort = [{
+									isAscending: true,
+									property: "group"
+								}, {
+									isAscending: true,
+									property: "name"
+								}]
+							}
+						}
 					}),
 
 
