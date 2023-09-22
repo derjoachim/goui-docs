@@ -8,7 +8,7 @@ import {
 	fieldset,
 	Format,
 	h2, p,
-	RestDataSource,
+	RestDataSource, Table,
 	table,
 	tbar,
 	textfield,
@@ -34,6 +34,14 @@ export class RestApiExample extends Component {
 			h2("REST API Example"),
 
 			p("This example shows how to use a REST API Data source to show a table and edit dialog. Double click rows to edit. We used <a href='https://reqres.in'>https://reqres.in</a> for this example."),
+
+			btn({
+				icon: "refresh",
+				handler: (button, ev) => {
+					const tbl = button.nextSibling() as Table;
+					tbl.store.reload();
+				}
+			}),
 
 			table({
 				fitParent: true,
