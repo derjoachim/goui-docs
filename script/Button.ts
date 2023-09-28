@@ -10,7 +10,7 @@ import {
 	menu,
 	Notifier,
 	p,
-	root,
+	root, t,
 	tbar
 } from "@intermesh/goui"
 import {Page} from "./Page.js";
@@ -337,7 +337,49 @@ export class Button extends Page {
 					text: "Window",
 					route: "window"
 				})
-			)
+			),
+
+
+			h2({
+				text: "Context menu"
+			}),
+
+			comp({
+				text: t("Right click on me to show context menu"),
+				height: 100,
+				cls: "frame pad",
+				listeners: {
+					render:comp1 => {
+						comp1.el.addEventListener("contextmenu", ev => {
+
+							ev.preventDefault();
+
+							const contextMenu = menu({
+								isDropdown: true
+							},
+								btn( {
+									icon: "open_in_browser",
+									text: t("Open")
+								}),
+
+								btn({
+									icon: "edit",
+									text: t("Edit")
+								}),
+
+								hr(),
+								btn( {
+									cls: "danger",
+									icon: "delete",
+									text: t("Delete")
+								}),
+								);
+
+							contextMenu.showAt(ev);
+						})
+					}
+				}
+			})
 		)
 	}
 

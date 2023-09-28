@@ -8,6 +8,33 @@ body {
 	margin: 0;
 	height: 100%;
 	display: flex;
+
+	> header {
+		background-color: var(--bg-header);
+		color: white;
+		align-items: center;
+
+		> * {
+			padding: 0;
+			margin: 0;
+		}
+
+
+
+		> div.goui.hbox {
+			align-items: center;
+		}
+		a {
+			color:white;
+			text-decoration: none;
+			font-family: courier;
+			font-weight: bold;
+			margin-right: 16px;
+			img {
+				display: block;
+			}
+		}
+	}
 }
 
 a {
@@ -19,32 +46,7 @@ a {
 }
 
 
-header {
-	background-color: var(--bg-header);
-	color: white;
-	align-items: center;
 
-	> * {
-		padding: 0;
-		margin: 0;
-	}
-
-
-
-	> div.goui.hbox {
-		align-items: center;
-	}
-	 a {
-		 color:white;
-		 text-decoration: none;
-		 font-family: courier;
-		 font-weight: bold;
-		margin-right: 16px;
-		img {
-			display: block;
-		}
-	}
-}
 
 .main.cards {
 	min-height: 100%;

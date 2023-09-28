@@ -1,36 +1,44 @@
 import {Page} from "./Page.js";
 import {
+	E,
+	ArrayField,
 	arrayfield,
 	autocomplete,
+	autocompletechips,
 	btn,
 	checkbox,
 	checkboxgroup,
+	checkboxselectcolumn,
 	chips,
 	colorfield,
-	column, comp,
+	column,
+	combobox,
 	containerfield,
+	datasourcestore,
 	datefield,
 	DateTime,
 	Field,
 	fieldset,
 	form,
 	Form as GouiForm,
-	FunctionUtil,
-	htmlfield, listpicker,
+	htmlfield,
 	mapfield,
 	MapField,
-	menu,
 	numberfield,
 	p,
 	radio,
 	recurrencefield,
 	select,
-	store, table,
+	store,
+	table,
 	tbar,
 	textarea,
+	TextField,
 	textfield,
-	Window
+	Window,
+	rangefield
 } from "@intermesh/goui";
+import {demoDataSource} from "./DemoDataSource";
 
 export class Form extends Page {
 	private form: GouiForm;
@@ -56,36 +64,11 @@ export class Form extends Page {
 				createdAt: (new DateTime()).addDays(Math.ceil(Math.random() * -365)).format("c")
 			});
 		}
-		const chipsTablePicker = listpicker({
 
-			list: table({
-				fitParent: true,
-				headers: false,
-				store: store<AutoCompleteRecord>({
-					data: autocompleteRecords,
-					sort: [{
-						property: "description",
-						isAscending: true
-					}]
-				}),
-				columns: [
-					column({
-						header: "Description",
-						id: "description",
-						sortable: true,
-						resizable: true
-					})
-				]
-			})
-		});
-
-		const chipsAutoMenu = menu({
-			cls: "goui-dropdown scroll",
-			removeOnClose: false,
-			height: 300
-		},
-			chipsTablePicker
-		)
+		const tf = textfield({
+				label: "Text",
+				name: "text"
+			});
 
 		this.items.add(
 			this.form = form({
@@ -100,119 +83,77 @@ export class Form extends Page {
 
 				p("Forms can handle complex object structures using Container and Array type fields. They don't submit in the traditional way but return a Javascript Object that can be sent using an XHR or fetch API request. To see how this works fill in some data and press 'Save' below."),
 
-				fieldset({
-						legend: "Chip fields"
-					},
-
-					chips({
-						name: "fruits",
-						label: "Fruits",
-						value: ["Apple", "Banana", "Coconut"]
-					}),
-
-					chips({
-						label: "Custom autocomplete chips",
-						name: "customChips",
-						value: [
-							{id: "1", name: "John"},
-							{id: "2", name: "Pete"}
-						],
-						textInputToValue: async (text) => {
-							return {
-								id: "3",
-								name: text
-							}
-						},
-						chipRenderer: async (chip, value) => {
-							chip.text = value.name;
-						},
-
-						listeners: {
-							render: comp => {
-
-								chipsTablePicker.on('select', (tablePicker, record) => {
-									comp.value = comp.value.concat([{
-										id: record.id,
-										name: record.description
-									}]);
-
-									chipsAutoMenu.hide();
-									comp.editor.el.innerText = "";
-
-									comp.focus();
-								})
-
-								comp.editor.el.addEventListener('input', FunctionUtil.buffer(300, () => {
-									chipsAutoMenu.showFor(comp.wrap);
-
-									const text = comp.editor.el.innerText;
-
-									//clone the array for filtering
-									const filtered = structuredClone(autocompleteRecords).filter((r:AutoCompleteRecord) => {
-										// console.warn(r.description, text, r.description.indexOf(text))
-										return !text || r.description.toLowerCase().indexOf(text.toLowerCase()) === 0;
-									});
-
-									//simple local filter on the store
-									chipsTablePicker.list.store.loadData(filtered, false);
-								}));
-
-								comp.editor.el.addEventListener('keydown', (ev) => {
-
-									switch ((ev as KeyboardEvent).key) {
-										case 'ArrowDown':
-											ev.preventDefault();
-											chipsAutoMenu.showFor(comp.wrap);
-											chipsTablePicker.focus();
-											break;
-
-										case 'Escape':
-											if (!chipsAutoMenu.hidden) {
-												chipsAutoMenu.hide();
-												ev.preventDefault();
-												ev.stopPropagation();
-												this.focus();
-											}
-											break;
-									}
-								});
-
-							}
-						}
-
-					})
-				),
 
 				fieldset({
 						legend: "Text fields"
 					},
 
 					textfield({
-						label: "Basic",
-						name: "basic"
+						hidden: true,
+						name: "hiddenTextField",
+						value: "hiddenValue"
 					}),
 
-					textfield({
-						itemId: "requiredField",
-						label: "Required field",
-						name: "required",
-						required: true,
-						hint: "This is a required field"
+					tf,
+
+
+						checkbox({
+
+							label: "Disabled",
+							listeners: {
+								change: (field, checked) => {
+									tf.disabled = checked;
+								}
+							}
+						}),
+
+						checkbox({
+
+							label: "Required",
+							listeners: {
+								change: (field, checked) => {
+									tf.required = checked;
+								}
+							}
+						}),
+
+						checkbox({
+
+							label: "Read only",
+							listeners: {
+								change: (field, checked) => {
+									tf.readOnly = checked;
+								}
+							}
+						}),
+
+						checkbox({
+
+							label: "Leading icon",
+							listeners: {
+								change: (field, checked) => {
+									tf.icon = checked ? "favorite" : undefined;
+								}
+							}
+						}),
+
+					checkbox({
+
+						label: "Button",
+						listeners: {
+							change: (field, checked) => {
+								tf.buttons = checked ? [btn({
+									icon: "clear",
+									handler: (clearBtn) => {
+										clearBtn.findAncestorByType(TextField)!.reset();
+									}
+								})] : undefined
+							}
+						}
 					}),
 
-					textfield({
-						label: "Read Only",
-						name: "readonly",
-						readOnly: true,
-						value: "This is read only"
-					}),
 
-					textfield({
-						label: "Disabled",
-						name: "disabled",
-						disabled: true,
-						value: "Disabled field"
-					})
+
 				),
 
 				fieldset({legend: "Number field"},
@@ -226,7 +167,11 @@ export class Form extends Page {
 
 					datefield({
 						label: "Date",
-						name: "date"
+						name: "date",
+						required: true,
+						minDate: (new DateTime()).addYears(-2),
+						maxDate: (new DateTime()).addDays(-1),
+						hint: "Select a date in the past 2 years"
 					}),
 
 					textfield({
@@ -329,6 +274,31 @@ export class Form extends Page {
 						})
 
 
+					}),
+
+					combobox({
+						label: "Combo box",
+						name: "comboBox",
+						dataSource: demoDataSource,
+						hint: "A combo box is an extension of an autocompletefield and simplifies the creation of a combo box",
+						listeners: {
+							render:comp => {
+								//group the list by the group column
+								comp.list.groupBy = "group";
+								comp.list.store.queryParams = {
+									filter: {
+										parentId: undefined
+									}
+								};
+								comp.list.store.sort = [{
+									isAscending: true,
+									property: "group"
+								}, {
+									isAscending: true,
+									property: "name"
+								}]
+							}
+						}
 					}),
 
 
@@ -481,7 +451,7 @@ export class Form extends Page {
 							cls: "outlined",
 							text: "Add new value",
 							handler: () => {
-								const fld = this.form.findField<MapField>("mapfield")!;
+								const fld = this.form.findField<MapField>("mapfield") as MapField;
 								fld.add({})
 							}
 						})
@@ -541,15 +511,125 @@ export class Form extends Page {
 							cls: "outlined",
 							text: "Add new value",
 							handler: () => {
-								const arrayField = this.form.findField("arrayfield")!;
-								arrayField.value = arrayField.value.concat([{
+								const arrayField = this.form.findField("arrayfield") as ArrayField;
+								arrayField.addValue({
 									type: "home",
 									email: "another@example.com"
-								}]);
+								});
 							}
 						})
 					)
 				),
+
+
+				fieldset({
+						legend: "Chip fields"
+					},
+
+					chips({
+						name: "fruits",
+						label: "Fruits",
+						value: ["Apple", "Banana", "Coconut"]
+					}),
+
+					autocompletechips({
+						label: "Autocomplete single select",
+						name: "customChips",
+						chipRenderer: async (chip, value) => {
+							chip.text = value.name;
+						},
+						pickerRecordToValue(field, record): any {
+							return {
+								id: record.id,
+								name: record.description
+							};
+						},
+						listeners: {
+							autocomplete: (field, input) => {
+								//clone the array for filtering
+								const filtered = structuredClone(autocompleteRecords).filter((r:AutoCompleteRecord) => {
+									// console.warn(r.description, text, r.description.indexOf(text))
+									return !input || r.description.toLowerCase().indexOf(input.toLowerCase()) === 0;
+								});
+
+								//simple local filter on the store
+								field.list.store.loadData(filtered, false);
+							}
+						},
+
+						// dropdown list can be a table or list component
+						list: table({
+							fitParent: true,
+							headers: false,
+							store: store<AutoCompleteRecord>({
+								data: autocompleteRecords,
+								sort: [{
+									property: "description",
+									isAscending: true
+								}]
+							}),
+							columns: [
+								column({
+									header: "Description",
+									id: "description",
+									sortable: true,
+									resizable: true
+								})
+							]
+						})
+					}),
+
+
+					autocompletechips({
+						list: table({
+							fitParent: true,
+							headers: false,
+							store: datasourcestore({
+								dataSource: demoDataSource
+							}),
+							rowSelectionConfig: {
+								multiSelect: true
+							},
+							columns: [
+								checkboxselectcolumn(),
+								column({
+									header: "Name",
+									id: "name",
+									sortable: true,
+									resizable: true
+								})
+							]
+						}),
+						label: "Autocomplete with multi select",
+						name: "customChips",
+						chipRenderer: async (chip, value) => {
+							chip.text = value;
+						},
+						pickerRecordToValue(field, record): any {
+							return record.name;
+						},
+						listeners: {
+							autocomplete: (field, input) => {
+								field.list.store.queryParams = {filter: {name: input}};
+								field.list.store.load();
+							}
+						}
+					})
+				),
+
+				fieldset({
+					legend: "Range field"
+				},
+					rangefield({
+						name: "rangefield",
+						label: "Range"
+					}),
+					textfield({
+						label: "E-mail",
+						type: "email"
+					})
+					),
+
 
 				tbar({cls: "bottom"},
 

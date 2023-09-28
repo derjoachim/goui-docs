@@ -8,7 +8,7 @@ import {
 	fieldset,
 	Format,
 	h2, p,
-	RestDataSource,
+	RestDataSource, Table,
 	table,
 	tbar,
 	textfield,
@@ -24,17 +24,24 @@ interface User extends BaseEntity {
 }
 
 // there should be only one unique instance of each data source in the whole application
-const userDS = new RestDataSource<User>("https://reqres.in/api", "users");
+const userDS = new RestDataSource<User>("https://reqres.in/api/users", "users");
 
 export class RestApiExample extends Component {
 	constructor() {
 		super();
 
-
 		this.items.add(
 			h2("REST API Example"),
 
-			p("This example shows how to use a REST API Data source to show a table and edit dialog. Double click rows to edit."),
+			p("This example shows how to use a REST API Data source to show a table and edit dialog. Double click rows to edit. We used <a href='https://reqres.in'>https://reqres.in</a> for this example."),
+
+			btn({
+				icon: "refresh",
+				handler: (button, ev) => {
+					const tbl = button.nextSibling() as Table;
+					tbl.store.reload();
+				}
+			}),
 
 			table({
 				fitParent: true,
