@@ -77,7 +77,7 @@ export class Form extends Page {
 					cls: "scroll fit",
 					handler: (form) => {
 
-						Window.alert("<code>" + JSON.stringify(form.getValues(), null, 4) + "</code>");
+						Window.alert("<code>" + JSON.stringify(form.modified, null, 4) + "</code>");
 					}
 				},
 
@@ -395,6 +395,10 @@ export class Form extends Page {
 						textfield({
 							label: "Sub object",
 							name: "prop"
+						}),
+						datefield({
+							label: "Sub date",
+							name: "date"
 						})
 					)
 				),
