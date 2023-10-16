@@ -36,7 +36,7 @@ import {
 	TextField,
 	textfield,
 	Window,
-	rangefield
+	rangefield, displayfield, Format, comp
 } from "@intermesh/goui";
 import {demoDataSource} from "./DemoDataSource";
 
@@ -633,6 +633,58 @@ export class Form extends Page {
 						type: "email"
 					})
 					),
+
+
+				fieldset({
+						legend: "Display",
+					},
+					p("Forms can also be used to present data using display fields"),
+					comp({		cls: "hbox"},
+						comp({flex: 1},
+							displayfield({
+								icon: "person",
+								name: "nameDisplay",
+								label: "Name",
+								value: "Don Doe"
+							}),
+
+							displayfield({
+								icon: "today",
+								name: "todayDisplay",
+								label: "Date",
+								renderer: (v, field) => {
+									return (new DateTime(v)).format(Format.dateFormat)
+								},
+								value: (new DateTime()).format("Y-m-d") // server typically sends in another format
+							})
+						),
+						comp({flex: 1},
+							textfield({
+								name: "name",
+								label: "Name",
+								value: "Don Doe",
+								listeners: {
+									change:(field, newValue, oldValue) => {
+										const form = field.findAncestorByType(GouiForm)!;
+										form.findField("nameDisplay")!.value = newValue;
+									}
+								}
+							}),
+
+							datefield({
+								name: "today",
+								label: "Date",
+								value: (new DateTime()).format("Y-m-d"),
+								listeners: {
+									change:(field, newValue, oldValue) => {
+										const form = field.findAncestorByType(GouiForm)!
+										form.findField("todayDisplay")!.value = newValue;
+									}
+								}
+							})
+						)
+					)
+				),
 
 
 				tbar({cls: "bottom"},
