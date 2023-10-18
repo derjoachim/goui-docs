@@ -49,6 +49,13 @@ export class Form extends Page {
 		this.title = "Form";
 		this.sourceURL = "Form.ts";
 
+
+		const timeField = textfield({
+			type: "time",
+			itemId: "timeField",
+			width: 120
+		});
+
 		type AutoCompleteRecord = {
 			id: number,
 			description: string,
@@ -174,17 +181,31 @@ export class Form extends Page {
 						hint: "Select a date in the past 2 years"
 					}),
 
-					textfield({
-						type: "date",
-						name: "datenative",
-						label: "Date (native)"
-					}),
+					comp({
+						cls: "hbox gap"
+					},
+						datefield({
+							flex: 2,
+							label:"Date with time",
+							name: "dateAndTime",
+							timeField: timeField, //connects the time field
+							value: (new DateTime()).format("Y-m-dTH:i")
+						}),
+						timeField
 
-					textfield({
-						type: "datetime-local",
-						name: "datetime-local",
-						label: "Date & time"
-					}),
+					),
+
+					// textfield({
+					// 	type: "date",
+					// 	name: "datenative",
+					// 	label: "Date (native)"
+					// }),
+					//
+					// textfield({
+					// 	type: "datetime-local",
+					// 	name: "datetime-local",
+					// 	label: "Date & time"
+					// }),
 
 
 					textfield({
