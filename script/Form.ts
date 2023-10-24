@@ -181,11 +181,25 @@ export class Form extends Page {
 						hint: "Select a date in the past 2 years"
 					}),
 
+          datefield({
+            label: "Date",
+            name: "date",
+            inputFormat: "m/d/Y",
+            hint: "Configured with American date format"
+          }),
+
+					datefield({
+						label: "Date",
+						name: "date",
+						inputFormat: "Y-m-d",
+						hint: "Configured with programmers date format"
+					}),
+
 					comp({
 						cls: "hbox gap"
 					},
 						datefield({
-							flex: 2,
+							flex: 1,
 							label:"Date with time",
 							name: "dateAndTime",
 							timeField: timeField, //connects the time field
@@ -195,11 +209,11 @@ export class Form extends Page {
 
 					),
 
-					// textfield({
-					// 	type: "date",
-					// 	name: "datenative",
-					// 	label: "Date (native)"
-					// }),
+					textfield({
+						type: "date",
+						name: "datenative",
+						label: "Date (native)"
+					}),
 					//
 					// textfield({
 					// 	type: "datetime-local",
