@@ -141,7 +141,7 @@ export class DemoDataSource extends AbstractDataSource<DemoEntity> {
 		});
 	}
 
-	protected internalRemoteChanges(): Promise<Changes<DemoEntity>> {
+	protected internalRemoteChanges(): Promise<Changes> {
 		return Promise.resolve({
 			newState: "1",
 			oldState: "1"
