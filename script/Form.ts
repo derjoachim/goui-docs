@@ -443,7 +443,7 @@ export class Form extends Page {
 					mapfield({
 						name: "mapfield",
 						buildField: () => {
-							return containerfield({
+							const field = containerfield({
 									cls: "hbox gap",
 								},
 
@@ -467,7 +467,17 @@ export class Form extends Page {
 									label: "E-mail",
 									name: "email",
 								}),
-							)
+
+								btn({
+									icon: "delete",
+									title: "Delete",
+									handler: (btn) => {
+										field.remove();
+									}
+								})
+							);
+
+							return field;
 						},
 
 						value: {
@@ -508,7 +518,7 @@ export class Form extends Page {
 						 * Typically, a container field will be used.
 						 */
 						buildField: () => {
-							return containerfield({
+							const field = containerfield({
 									cls: "hbox gap",
 								},
 
@@ -531,8 +541,19 @@ export class Form extends Page {
 									flex: 1,
 									label: "E-mail",
 									name: "email",
+								}),
+
+								btn({
+									icon: "delete",
+									title: "Delete",
+									handler: (btn) => {
+										field.remove();
+									}
 								})
-							)
+
+							);
+
+							return field;
 						},
 						value: [{
 							type: "work",

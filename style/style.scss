@@ -35,6 +35,21 @@ body {
 			}
 		}
 	}
+
+	> footer {
+		margin-top: 80px;
+		padding: 8px;
+		text-align: center;
+		border-top: 1px solid $colorBorder;
+		//color: white;
+		p {
+			font-size: 80%;
+			margin: 0.5em;
+		}
+		a {
+			//color: white;
+		}
+	}
 }
 
 a {
@@ -78,20 +93,7 @@ section {
 	display: none;
 }
 
-footer {
-	margin-top: 80px;
-	padding: 8px;
-	text-align: center;
-	border-top: 1px solid $colorBorder;
-	//color: white;
-	p {
-		font-size: 80%;
-		margin: 0.5em;
-	}
-	a {
-		//color: white;
-	}
-}
+
 
 
 code {
