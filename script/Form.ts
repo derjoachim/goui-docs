@@ -314,6 +314,7 @@ export class Form extends Page {
 					combobox({
 						label: "Combo box",
 						name: "comboBox",
+						filterName: "name",
 						dataSource: demoDataSource,
 						hint: "A combo box is an extension of an autocompletefield and simplifies the creation of a combo box",
 						listeners: {
