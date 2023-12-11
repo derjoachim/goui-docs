@@ -13,7 +13,7 @@ import {
 } from "@intermesh/goui";
 import {PlaygroundTablePanel} from "./table/PlayGroundTablePanel.js";
 import {PagingTable} from "./table/PagingTable.js";
-import {demoDataSource} from "./DemoDataSource";
+import {DemoDataSource, demoDataSource, DemoEntity} from "./DemoDataSource";
 
 export class Table extends Page {
 
@@ -43,13 +43,16 @@ export class Table extends Page {
 	private createTable() {
 		return table({
 			fitParent: true,
-			store: datasourcestore({
+			store: datasourcestore<DemoDataSource, DemoEntity & {selected:boolean}>({
 				dataSource: demoDataSource,
 				queryParams: {
 					filter: {
 						parentId: undefined
 					},
 					limit: 10
+				},
+				buildRecord:async entity => {
+					return Object.assign(entity , {selected: true});
 				}
 			}),
 
@@ -58,7 +61,9 @@ export class Table extends Page {
 			},
 
 			columns: [
-				checkboxselectcolumn(),
+				checkboxselectcolumn({
+					id: "selected"
+				}),
 
 				column({
 					header: "ID",

@@ -1,5 +1,5 @@
 import {Page} from "./Page.js";
-import {comp, h2, p, splitter} from "@intermesh/goui";
+import {btn, comp, h2, p, splitter} from "@intermesh/goui";
 
 export class Layout extends Page {
 	constructor() {
@@ -119,6 +119,24 @@ export class Layout extends Page {
 
 			h2("border"),
 			p("Use the 'border-top', 'border-right', 'border-bottom' and 'border-left' css class to apply the standard border."),
+
+			h2("flow"),
+			p("Typically used in form layouts. Items are next eachother and move to the next row when there's no space left. When no width is given items will get 100% width."),
+
+			h2("print"),
+
+			comp({
+				cls: "frame pad",
+				html: "Only this element will be printed with the button below"
+			}),
+
+			btn({
+				icon: "print",
+				text: "Print",
+				handler: (button, ev) => {
+					button.previousSibling()!.print();
+				}
+			})
 		)
 	}
 }

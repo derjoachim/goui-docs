@@ -36,7 +36,7 @@ import {
 	TextField,
 	textfield,
 	Window,
-	rangefield
+	rangefield, displayfield, Format, comp
 } from "@intermesh/goui";
 import {demoDataSource} from "./DemoDataSource";
 
@@ -48,6 +48,13 @@ export class Form extends Page {
 
 		this.title = "Form";
 		this.sourceURL = "Form.ts";
+
+
+		const timeField = textfield({
+			type: "time",
+			itemId: "timeField",
+			width: 120
+		});
 
 		type AutoCompleteRecord = {
 			id: number,
@@ -77,7 +84,7 @@ export class Form extends Page {
 					cls: "scroll fit",
 					handler: (form) => {
 
-						Window.alert("<code>" + JSON.stringify(form.getValues(), null, 4) + "</code>");
+						Window.alert("<code>" + JSON.stringify(form.modified, null, 4) + "</code>");
 					}
 				},
 
@@ -174,17 +181,45 @@ export class Form extends Page {
 						hint: "Select a date in the past 2 years"
 					}),
 
+          datefield({
+            label: "Date",
+            name: "date",
+            inputFormat: "m/d/Y",
+            hint: "Configured with American date format"
+          }),
+
+					datefield({
+						label: "Date",
+						name: "date",
+						inputFormat: "Y-m-d",
+						hint: "Configured with programmers date format"
+					}),
+
+					comp({
+						cls: "hbox gap"
+					},
+						datefield({
+							flex: 1,
+							label:"Date with time",
+							name: "dateAndTime",
+							timeField: timeField, //connects the time field
+							value: (new DateTime()).format("Y-m-dTH:i")
+						}),
+						timeField
+
+					),
+
 					textfield({
 						type: "date",
 						name: "datenative",
 						label: "Date (native)"
 					}),
-
-					textfield({
-						type: "datetime-local",
-						name: "datetime-local",
-						label: "Date & time"
-					}),
+					//
+					// textfield({
+					// 	type: "datetime-local",
+					// 	name: "datetime-local",
+					// 	label: "Date & time"
+					// }),
 
 
 					textfield({
@@ -279,6 +314,7 @@ export class Form extends Page {
 					combobox({
 						label: "Combo box",
 						name: "comboBox",
+						filterName: "name",
 						dataSource: demoDataSource,
 						hint: "A combo box is an extension of an autocompletefield and simplifies the creation of a combo box",
 						listeners: {
@@ -395,6 +431,10 @@ export class Form extends Page {
 						textfield({
 							label: "Sub object",
 							name: "prop"
+						}),
+						datefield({
+							label: "Sub date",
+							name: "date"
 						})
 					)
 				),
@@ -404,7 +444,7 @@ export class Form extends Page {
 					mapfield({
 						name: "mapfield",
 						buildField: () => {
-							return containerfield({
+							const field = containerfield({
 									cls: "hbox gap",
 								},
 
@@ -428,7 +468,17 @@ export class Form extends Page {
 									label: "E-mail",
 									name: "email",
 								}),
-							)
+
+								btn({
+									icon: "delete",
+									title: "Delete",
+									handler: (btn) => {
+										field.remove();
+									}
+								})
+							);
+
+							return field;
 						},
 
 						value: {
@@ -469,7 +519,7 @@ export class Form extends Page {
 						 * Typically, a container field will be used.
 						 */
 						buildField: () => {
-							return containerfield({
+							const field = containerfield({
 									cls: "hbox gap",
 								},
 
@@ -492,8 +542,19 @@ export class Form extends Page {
 									flex: 1,
 									label: "E-mail",
 									name: "email",
+								}),
+
+								btn({
+									icon: "delete",
+									title: "Delete",
+									handler: (btn) => {
+										field.remove();
+									}
 								})
-							)
+
+							);
+
+							return field;
 						},
 						value: [{
 							type: "work",
@@ -629,6 +690,62 @@ export class Form extends Page {
 						type: "email"
 					})
 					),
+
+
+				fieldset({
+						legend: "Display",
+					},
+					p("Forms can also be used to present data using display fields"),
+
+					comp({cls: "hbox gap"},
+
+						displayfield({
+							icon: "person",
+							name: "nameDisplay",
+							label: "Name",
+							value: "Don Doe"
+						}),
+
+						textfield({
+							name: "name",
+							label: "Name",
+							value: "Don Doe",
+							listeners: {
+								change:(field, newValue, oldValue) => {
+									const form = field.findAncestorByType(GouiForm)!;
+									form.findField("nameDisplay")!.value = newValue;
+								}
+							}
+						})
+					),
+
+					comp({cls: "hbox gap"},
+						displayfield({
+
+							icon: "today",
+							name: "todayDisplay",
+							label: "Date",
+							renderer: (v, field) => {
+								return (new DateTime(v)).format(Format.dateFormat)
+							},
+							value: (new DateTime()).format("Y-m-d") // server typically sends in another format
+						}),
+
+						datefield({
+							name: "today",
+							label: "Date",
+							value: (new DateTime()).format("Y-m-d"),
+							listeners: {
+								change:(field, newValue, oldValue) => {
+									const form = field.findAncestorByType(GouiForm)!
+									form.findField("todayDisplay")!.value = newValue;
+								}
+							}
+						})
+					)
+
+
+				),
 
 
 				tbar({cls: "bottom"},
